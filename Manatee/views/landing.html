@@ -1,0 +1,15 @@
+﻿<div class="row" ng-controller="LandingCtrl as landing">
+    <div class="col-xs-12 col-sm-6 col-lg-8">
+        <h1>Bootstrap starter template</h1>
+        <p class="lead">Use this document as a way to quickly start any new project.<br> All you get is this text and a mostly barebones HTML document.</p>
+        <h3>Now you're cookin' with node-webkit and PouchDB.</h3>
+    </div>
+    <div class="col-xs-6 col-lg-4"><ul>
+        <li>Do we have a WebSQL-based PouchDB? <span id="websql">{{ landing.info.hasws() }}</span></li>
+        <li>Do we have a IndexedDB-based PouchDB? <span id="websql">{{ landing.info.hasidb() }}</span></li>
+    </ul>
+    <p ng-bind="landing.info.title"></p>
+    <input type="text" ng-model="landing.info.title">
+    </div>
+
+</div>

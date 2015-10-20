@@ -1,0 +1,18 @@
+{
+  "name": "Manatee",
+  "version": "0.1.0.0",
+  "description": "blubber",
+  "main": "index.html",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "window": {
+    "toolbar": false,
+    "width": 1024,
+    "height": 720
+  },
+  "license": "ISC",
+  "dependencies": {
+  }
+}
