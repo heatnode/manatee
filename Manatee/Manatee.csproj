@@ -76,6 +76,7 @@
     <Content Include="js\controllers\ObjectListCtrl.js" />
     <Content Include="js\controllers\SyncCtrl.js" />
     <Content Include="js\directives\activelink.js" />
+    <Content Include="js\libraries\pouchdb\pouchdb.find.min.js" />
     <Content Include="js\services\database.js" />
     <Content Include="js\libraries\angular-route.min.js" />
     <Content Include="js\libraries\angular.min.js" />
@@ -99,6 +100,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="views\landing.html" />
+    <Content Include="views\objectlist.html" />
     <Content Include="views\sync.html" />
     <Content Include="Web.config" />
   </ItemGroup>

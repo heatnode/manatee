@@ -4,6 +4,7 @@ Manatee.factory('databaseSvc', databaseSvc);
 Manatee.factory('syncSvc', syncSvc);
 Manatee.controller('LandingCtrl', LandingCtrl);
 Manatee.controller('SyncCtrl', SyncCtrl);
+Manatee.controller('ObjectListCtrl', ObjectListCtrl);
 Manatee.directive('activeLink', activeLink);
 
 var configFunction = function ($routeProvider) {
@@ -14,8 +15,8 @@ var configFunction = function ($routeProvider) {
         .when('/sync', {
             templateUrl: 'views/sync.html',
         })
-        .when('/test', {
-            templateUrl: '',
+        .when('/list', {
+            templateUrl: 'views/objectlist.html',
         })
         .otherwise({
             redirectTo: 'landing'

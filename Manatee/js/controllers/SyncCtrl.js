@@ -28,7 +28,7 @@
 
     //todo: move to object ctrl
     self.list = function () {
-        self.dbItems = []; //note json object
+        self.dbItems = []; 
         $q.when(sync.db.getProcs()).then(function (result) {
             //console.log(result);
             var allrows = result.rows;
@@ -36,13 +36,7 @@
                 self.dbItems.push(item);
             });
         });
-        //var allrows = sync.db.getProcs();
-
     }
-
-    //inputEditTodo.id = 'input_' + todo._id;
-    //inputEditTodo.className = 'edit';
-    //inputEditTodo.value = todo.title;
 }
 
 // The $inject property of every controller (and pretty much every other type of object in Angular) 

@@ -1,28 +1,26 @@
 var databaseSvc = function ($rootScope) {
 
-    var service = {
-        indexedDB: function () { return data.hasIndexedDB; },
-        webSQL: function () { return data.hasWebSQL; }
-    };
+    var service = {};
+    var db =  new PouchDB('manateeStore');
+    service.db = db;
 
-    var data = {
-        hasIndexedDB: null,
-        hasWebSQL: null
-    };
-
-    service.db = new PouchDB('manateeStore');
-
-    service.addProc = function (text) {
+    service.addProc = function (id, text) {
         var proc = {
-            _id: new Date().toISOString()+text,
+            _id: id+'procedure', //just hacking something in
             title: text,
             completed: false,
             type: "procedure",
             datedue: null,
+            result: {
+                value: 0,
+                type:'testresult',
+                options: [{ text: 'NONE', optvalue: 0 }, { text: 'pass', optvalue: 1 }, { text: 'fail', optvalue: 2 }]
+            },
             category1: {
                 value: 0,
-                options: [{ text: 'cat1', optvalue: 1 }, { text: 'cat2', optvalue: 2 }]
-                }
+                type:'singleselect',
+                options: [{ text: 'NONE', optvalue: 1 }, { text: 'cat1', optvalue: 1 }, { text: 'cat2', optvalue: 2 }]
+            }
         };
 
         service.db.put(proc, function callback(err, result) {
@@ -36,8 +34,31 @@ var databaseSvc = function ($rootScope) {
     }
 
     service.getProcs = function () {
-        return service.db.allDocs({ include_docs: true, descending: true });
+        return db.allDocs({ include_docs: true, descending: true });
     }
+
+    //------------------ just testing here --------------
+    var data = {
+        hasIndexedDB: null,
+        hasWebSQL: null,
+        totalRecords: undefined
+    };
+
+    service.updateStats = function () { 
+
+        db.info().then(function (result) {
+            // handle result
+            data.totalRecords = result.doc_count;
+        }).catch(function (err) {
+            console.log(err);
+        });
+    };
+
+    service.updateStats();
+
+    service.indexedDB = function () { return data.hasIndexedDB; };
+    service.webSQL = function () { return data.hasWebSQL; };
+    service.getNumberRecords = function () { return data.totalRecords; };
 
     new PouchDB('using-idb').info().then(function () {
         //service.hasIndexedDBhtml = '&#10003';
@@ -54,6 +75,7 @@ var databaseSvc = function ($rootScope) {
     }).catch(function (err) {
         data.hasWebSQL = "Nope, got an error: " + err;
     });
+    //------------------ end testing --------------
 
     return service;
 };

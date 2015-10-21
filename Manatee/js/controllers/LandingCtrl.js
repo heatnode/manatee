@@ -6,6 +6,7 @@
     self.info = {
         hasidb: db.indexedDB,
         hasws: db.webSQL,
+        getTotalRecs: db.getNumberRecords,
         title: 'i am a title'
     }
 
