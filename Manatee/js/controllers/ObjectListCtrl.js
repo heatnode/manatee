@@ -3,8 +3,6 @@
     var self = this; //for controller as syntax later
     //use "controller as" syntax or not?
 
-    
-
     self.procs = [];
     
     //$scope.$on('dbservicedata:updated', function () {
@@ -18,10 +16,19 @@
             //console.log(result);
             var allrows = result.rows;
             allrows.forEach(function (item) {
-                console.log(item);
                 self.procs.push(item.doc);
             });
         });
+    }
+
+    self.testSave = function () {
+        //find dirty form, save?
+        //console.log('test save');
+    }
+
+    self.resolveTest = function (proc) {
+        //console.log(proc);
+        db.saveProc(proc);
     }
 
     self.list();

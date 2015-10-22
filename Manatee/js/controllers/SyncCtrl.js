@@ -15,8 +15,13 @@
         //self.log = [];
         //self.log.push({ text: 'row ' + i });
         //i = i + 1;
-        sync.doSync();
-        self.log.push({ text: 'sync completed but maybe not- consider async' });
+        //todo: obviously move the reinit later
+        //$q.when(service.reInitDB()).then(function (result) {
+            sync.doSync();
+            self.log.push({ text: 'sync completed but maybe not- consider async' });
+        //});
+        
+
     }
 
     //todo: move to object ctrl

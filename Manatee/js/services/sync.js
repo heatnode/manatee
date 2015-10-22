@@ -1,4 +1,4 @@
-﻿var syncSvc = function (db) {
+﻿var syncSvc = function (db, $q) {
 
     var service = {
         name: 'there are those who call me ... sync',
@@ -6,18 +6,22 @@
     };
 
     service.doSync = function () {
-        var procnames = ['Procedure1', 'Procedure2', 'Procedure3', 'Procedur A', 'Procedure B', 'Procedurec'];
-        var i = db.getNumberRecords();
-        procnames.forEach(function (name) {
-            //tood: clear data first (just reset db store)
-            i = i + 1;
-            db.addProc(i, name);
+        //note reInitDB returns a promise but IS NOT a promise itself
+        //consider what we prefer ie woul
+        $q.when(db.reInitDB()).then(function () {
+            var procnames = ['Procedure1', 'Procedure2', 'Procedure3', 'Procedur A', 'Procedure B', 'Procedurec'];
+            //var procnames = ['Procedure 1', 'Procedure 2'];
+            var i = db.getNumberRecords();
+            procnames.forEach(function (name) {
+                i = i + 1;
+                db.addProc(i, name);
+            });
+            //for total recs
+            db.updateStats();
         });
-        //for total recs
-        db.updateStats();
     }
 
     return service;
 };
 
-syncSvc.$inject = ['databaseSvc'];
+syncSvc.$inject = ['databaseSvc','$q'];

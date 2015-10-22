@@ -71,6 +71,7 @@
     <Content Include="css\freeicons\Preview.png" />
     <Content Include="css\freeicons\readme.txt" />
     <Content Include="index.html" />
+    <Content Include="js\controllers\AlertCtrl.js" />
     <Content Include="js\controllers\LandingCtrl.js" />
     <Content Include="js\controllers\ObjectFormCtrl.js" />
     <Content Include="js\controllers\ObjectListCtrl.js" />
@@ -84,6 +85,7 @@
     <Content Include="js\libraries\pouchdb\pouchdb.min.js" />
     <Content Include="js\libraries\ui-bootstrap-tpls-0.14.2.min.js" />
     <Content Include="js\libraries\underscore-min.js" />
+    <Content Include="js\services\notify.js" />
     <Content Include="js\services\sync.js" />
     <Content Include="main.js" />
     <Content Include="packages.config" />

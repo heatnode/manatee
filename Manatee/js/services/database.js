@@ -1,8 +1,34 @@
 var databaseSvc = function ($rootScope) {
 
     var service = {};
-    var db =  new PouchDB('manateeStore');
-    service.db = db;
+
+    var db;
+    service.createDB = function () {
+        db = new PouchDB('manateeStore');
+        //todo: long term don't expose this obviously
+        service.db = db;
+    }
+
+    service.createDB();
+
+    service.findProc = function (id) {
+        return db.find({
+            selector: { '_id': id },
+            fields: ['_id', '_rev']
+        });
+    }
+
+    //db.destroy().then(function (response) {
+    //    // success
+    //}).catch(function (err) {
+    //    console.log(err);
+    //});
+    service.reInitDB = function () {
+        return db.destroy().then(function () {
+            db = new PouchDB('manateeStore');
+            service.db = db; //not sure we need this
+        })
+    };
 
     service.addProc = function (id, text) {
         var proc = {
@@ -25,12 +51,40 @@ var databaseSvc = function ($rootScope) {
 
         service.db.put(proc, function callback(err, result) {
             if (!err) {
-                console.log('Successfully entered proc');
+                //console.log('Successfully entered proc');
             }
         });
         //todo: let error bubble or throw error if it didn't work
         //also, may need to deal with async aspect here as well
         return proc;
+    }
+
+    service.saveProc = function (proc) {
+
+        service.findProc(proc._id).then(function (results) {
+                console.log('found saved proc');
+                //console.log(results.docs[0]);
+                return results.docs[0]._rev;
+        }).then(function (prior_rev) {
+            console.log(prior_rev);
+            //this is a temp hack for "second+" save on same object. Probably not viable long-term, but works for
+            //now to overcome refresh issue
+            proc._rev = prior_rev;
+            service.db.put(proc, function callback(err, result) {
+                if (err) {
+                    console.log(err);
+                } else {
+                    console.log('Successfully saved proc');
+                    var notification = { type: "success", title: "Save Success", body: proc.title };
+                    $rootScope.$broadcast('notificationEvent:updated', notification);
+                }
+            });
+        });
+
+
+        //todo: let error bubble or throw error if it didn't work
+        //also, may need to deal with async aspect here as well
+        //return proc;
     }
 
     service.getProcs = function () {
@@ -45,7 +99,6 @@ var databaseSvc = function ($rootScope) {
     };
 
     service.updateStats = function () { 
-
         db.info().then(function (result) {
             // handle result
             data.totalRecords = result.doc_count;

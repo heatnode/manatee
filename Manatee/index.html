@@ -29,7 +29,7 @@
           <a class="navbar-brand" href="">Manatee</a>
         </div>
         <div id="navbar" class="collapse navbar-collapse">
-          <ul class="nav navbar-nav">
+          <ul class="nav navbar-nav" active-link>
             <li class="active"><a href="#/landing">Home</a></li>
             <li><a href="#/list">List</a></li>
             <li><a href="#/sync">Sync</a></li>
@@ -40,7 +40,15 @@
 
     <div class="container" ng-view>
     </div>
-    
+    <div ng-controller="AlertCtrl">
+        <div class="alerts" ng-shw="notify.queue.length>0">
+            <div class="alert alert-{{(m.type)||'info'}} alert-dismissable fade in pull-right" ng-repeat="m in notify.queue">
+                <button type="button" class="close" data-dismiss="alert">×</button>
+                <label>{{m.title}}</label>
+                <div>{{m.body}}</div>
+            </div>
+        </div>
+   </div> 
     <script src="js/libraries/angular.min.js"></script>  
     <script src="js/libraries/angular-route.min.js"></script>
     <script src="js/libraries/ui-bootstrap-tpls-0.14.2.min.js"></script>
@@ -54,12 +62,15 @@
     <script src="js/directives/activelink.js"></script>
     <script src="js/services/database.js"></script>
     <script src="js/services/sync.js"></script>
-    
+    <script src="js/services/notify.js"></script>
+      
+
     <script src="js/controllers/LandingCtrl.js"></script>
     <script src="js/controllers/ObjectFormCtrl.js"></script>
     <script src="js/controllers/ObjectListCtrl.js"></script>
     <script src="js/controllers/SyncCtrl.js"></script>
-    
+    <script src="js/controllers/AlertCtrl.js"></script>
+
     <!-- main module -->
     <script src="main.js"></script>
       
