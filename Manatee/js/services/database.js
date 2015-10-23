@@ -1,8 +1,8 @@
 var databaseSvc = function ($rootScope) {
 
     var service = {};
-
     var db;
+
     service.createDB = function () {
         db = new PouchDB('manateeStore');
         //todo: long term don't expose this obviously
@@ -18,77 +18,85 @@ var databaseSvc = function ($rootScope) {
         });
     }
 
-    //db.destroy().then(function (response) {
-    //    // success
-    //}).catch(function (err) {
-    //    console.log(err);
-    //});
     service.reInitDB = function () {
         return db.destroy().then(function () {
             db = new PouchDB('manateeStore');
-            service.db = db; //not sure we need this
+            service.db = db;
         })
     };
 
-    service.addProc = function (id, text) {
+    function createProc(id, text) {
+        var dbID = 'procedure/' + id;
+
         var proc = {
-            _id: id+'procedure', //just hacking something in
+            _id: dbID,
             title: text,
             completed: false,
             type: "procedure",
             datedue: null,
             result: {
                 value: 0,
-                type:'testresult',
+                type: 'testresult',
                 options: [{ text: 'NONE', optvalue: 0 }, { text: 'pass', optvalue: 1 }, { text: 'fail', optvalue: 2 }]
             },
             category1: {
                 value: 0,
-                type:'singleselect',
+                type: 'singleselect',
                 options: [{ text: 'NONE', optvalue: 1 }, { text: 'cat1', optvalue: 1 }, { text: 'cat2', optvalue: 2 }]
             }
         };
-
-        service.db.put(proc, function callback(err, result) {
-            if (!err) {
-                //console.log('Successfully entered proc');
-            }
-        });
-        //todo: let error bubble or throw error if it didn't work
-        //also, may need to deal with async aspect here as well
         return proc;
     }
 
-    service.saveProc = function (proc) {
+    service.addProc = function (title) {
+        var proc; //using closure so we have the value in the final step
+        return getSeqNumber()
+            .then(function (id) {
+                proc = createProc(id, title);
+                //console.log(proc);
+                return service.db.put(proc);
+            })
+            .then(function (response) {
+                console.log('proc added');
+                return proc;
+            })
+            .catch(function (err) {
+                //todo: let error bubble or throw error if it didn't work
+                console.log(err);
+            });
+    }
 
+    service.saveProc = function (proc) {
+        //todo: probably should return promise so we can let the UI
+        //wait or add this to a queue
+        //todo: maybe use .get api
         service.findProc(proc._id).then(function (results) {
-                console.log('found saved proc');
-                //console.log(results.docs[0]);
-                return results.docs[0]._rev;
-        }).then(function (prior_rev) {
-            console.log(prior_rev);
             //this is a temp hack for "second+" save on same object. Probably not viable long-term, but works for
             //now to overcome refresh issue
-            proc._rev = prior_rev;
-            service.db.put(proc, function callback(err, result) {
-                if (err) {
-                    console.log(err);
-                } else {
-                    console.log('Successfully saved proc');
-                    var notification = { type: "success", title: "Save Success", body: proc.title };
-                    $rootScope.$broadcast('notificationEvent:updated', notification);
-                }
-            });
+            //prior revision number
+            proc._rev = results.docs[0]._rev;
+            return proc;
+        })
+        .then(service.db.put(proc))
+        .then(function() {
+            var notification = { type: "success", title: "Save Success", body: proc.title };
+            $rootScope.$broadcast('notificationEvent:updated', notification);
+        })
+        .catch(function (err) {
+            console.log(err);
         });
 
-
-        //todo: let error bubble or throw error if it didn't work
-        //also, may need to deal with async aspect here as well
-        //return proc;
     }
 
     service.getProcs = function () {
         return db.allDocs({ include_docs: true, descending: true });
+    }
+
+    function getSeqNumber() {
+        return db.info().then(function (result) {
+                //console.log('database seq is ' + result.update_seq);
+                return result.update_seq;
+            });
     }
 
     //------------------ just testing here --------------
@@ -108,7 +116,6 @@ var databaseSvc = function ($rootScope) {
     };
 
     service.updateStats();
-
     service.indexedDB = function () { return data.hasIndexedDB; };
     service.webSQL = function () { return data.hasWebSQL; };
     service.getNumberRecords = function () { return data.totalRecords; };

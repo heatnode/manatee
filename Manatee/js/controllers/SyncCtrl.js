@@ -27,7 +27,7 @@
     //todo: move to object ctrl
     self.add = function () {
         var text = self.title || 'Test';
-        var proc = sync.db.addProc(text);
+        sync.db.addProc(text);
         self.log.push({ text: text + ' added' });
     }
 
