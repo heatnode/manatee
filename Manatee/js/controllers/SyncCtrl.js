@@ -5,23 +5,18 @@
     self.log = [];
     var i = 1;
     self.update = function () {
-//        self.log = 'updated!';
         self.log.push({ text: 'row ' + i });
         i = i + 1;
     }
 
     self.runSync = function () {
-        //        self.log = 'updated!';
-        //self.log = [];
-        //self.log.push({ text: 'row ' + i });
-        //i = i + 1;
-        //todo: obviously move the reinit later
-        //$q.when(service.reInitDB()).then(function (result) {
-            sync.doSync();
-            self.log.push({ text: 'sync completed but maybe not- consider async' });
-        //});
-        
+        sync.doSyncWithClear();
+        self.log.push({ text: 'sync completed' });
+    }
 
+    self.makeData = function () {
+        sync.doSync();
+        self.log.push({ text: 'sync completed' });
     }
 
     //todo: move to object ctrl
@@ -31,7 +26,6 @@
         self.log.push({ text: text + ' added' });
     }
 
-    //todo: move to object ctrl
     self.list = function () {
         self.dbItems = []; 
         $q.when(sync.db.getProcs()).then(function (result) {

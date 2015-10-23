@@ -12,7 +12,7 @@ body {
 .nav, .pagination, .carousel, .panel-title a { cursor: pointer; }
 /* various cleanups*/
 .objectTitle {
-    margin-left:8px !important;
+    margin-left:-6px !important;
 }
 
 /* end alert css */

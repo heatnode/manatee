@@ -5,10 +5,15 @@
         db:db //obviously, remove thhis, testing for now
     };
 
-    service.doSync = function () {
+    service.doSyncWithClear = function () {
         //note reInitDB returns a promise but IS NOT a promise itself
         //consider what we prefer ie woul
-        $q.when(db.reInitDB()).then(function () {
+        $q.when(db.reInitDB()).then(service.doSync);
+    }
+
+    service.doSync = function () {
+
+        return Promise.resolve().then(function () {
             var procnames = ['Procedure1', 'Procedure2', 'Procedure3', 'Procedur A', 'Procedure B', 'Procedurec'];
             addProcFactories = [];
             procnames.forEach(function (name) {
