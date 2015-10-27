@@ -1,4 +1,4 @@
-﻿var Manatee = angular.module('Manatee', ['ngRoute', 'ui.bootstrap']);
+﻿var Manatee = angular.module('Manatee', ['ngRoute', 'ui.bootstrap', 'ngAnimate', 'ckeditor']);
 
 Manatee.factory('databaseSvc', databaseSvc);
 Manatee.factory('syncSvc', syncSvc);
@@ -8,8 +8,10 @@ Manatee.controller('LandingCtrl', LandingCtrl);
 Manatee.controller('SyncCtrl', SyncCtrl);
 Manatee.controller('ObjectListCtrl', ObjectListCtrl);
 Manatee.controller('AlertCtrl', AlertCtrl);
-Manatee.controller('EditorModalCtrl', EditorModalCtrl);
 Manatee.controller('ModalInstanceCtrl', ModalInstanceCtrl);
+Manatee.controller('EditorModalCtrl', EditorModalCtrl);
+Manatee.controller('CkeditorCtrl', CkeditorCtrl);
+
 
 Manatee.directive('activeLink', activeLink);
 
