@@ -72,6 +72,7 @@
     <Content Include="css\freeicons\readme.txt" />
     <Content Include="index.html" />
     <Content Include="js\controllers\AlertCtrl.js" />
+    <Content Include="js\controllers\EditorModalCtrl.js" />
     <Content Include="js\controllers\LandingCtrl.js" />
     <Content Include="js\controllers\ObjectFormCtrl.js" />
     <Content Include="js\controllers\ObjectListCtrl.js" />
@@ -101,9 +102,11 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="views\editorModal.html" />
     <Content Include="views\landing.html" />
     <Content Include="views\objectlist.html" />
     <Content Include="views\sync.html" />
+    <Content Include="views\testzone.html" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>

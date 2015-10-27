@@ -2,7 +2,7 @@
 
     var service = {
         name: 'there are those who call me ... sync',
-        db:db //obviously, remove thhis, testing for now
+        db:db //obviously, remove this, testing for now
     };
 
     service.doSyncWithClear = function () {

@@ -33,3 +33,15 @@ body {
     padding: 2px !important;
 }
 /* end alert css */
+/*Playing with full screen modal
+    .modal-dialog {
+  width: 98%;
+  height: 92%;
+  padding: 0;
+}
+
+.modal-content {
+  height: 99%;
+}
+*/
+/*end modal*/
