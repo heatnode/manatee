@@ -1,5 +1,6 @@
 ﻿var EditorModalCtrl = function ($scope, $uibModal, $log) {
-
+    //todo: work on scoping
+    //var self = this;
     $scope.items = ['item1', 'item2', 'item3'];
 
     $scope.animationsEnabled = true;
