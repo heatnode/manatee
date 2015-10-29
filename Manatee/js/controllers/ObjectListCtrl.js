@@ -6,7 +6,7 @@
 
     //todo: move to object ctrl
     self.list = function () {
-        self.procs = []; //note json object
+        self.procs = []; 
         $q.when(db.getProcs()).then(function (result) {
             var allrows = result.rows;
             allrows.forEach(function (item) {
@@ -24,6 +24,12 @@
         //console.log(proc);
         db.saveProc(proc);
     }
+    // new
+    self.selectedId = null;
+    self.setSelected = function (id) {
+        self.selectedId = id;
+    };
+    //endnew
 
     self.list();
 }

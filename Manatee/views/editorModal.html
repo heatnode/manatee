@@ -1,17 +1,10 @@
 ﻿<div class="modal-header">
-    <h3 class="modal-title">CK EditorModal!</h3>
-</div>
-<div class="modal-body">
-    <ul>
-        <li ng-repeat="item in MIC.items">
-            <a href="#" ng-click="$event.preventDefault(); selected.item = item">{{ item }}</a>
-        </li>
-    </ul>
-   Selected: <b>{{ selected.item }}</b>
+    <h4>{{ MIC.label | firstUpper }} <small>for {{ MIC.title }}</small></h4>
 </div>
 <div class="row">
     <div class="col-xs-12">
         <div ng-controller="CkeditorCtrl">
+            <!-- NOTE MIC comes from controller as on instance open -->
             <div ckeditor="options" ng-model="MIC.content" ready="onReady()">fred</div>
         </div>
     </div>

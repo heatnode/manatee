@@ -70,6 +70,7 @@
     <Content Include="css\bootstrap.min.css" />
     <Content Include="css\freeicons\Preview.png" />
     <Content Include="css\freeicons\readme.txt" />
+    <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="index.html" />
     <Content Include="js\ckeditor\adapters\jquery.js" />
     <Content Include="js\ckeditor\build-config.js" />
@@ -403,6 +404,10 @@
     <Content Include="js\ckeditor\samples\toolbarconfigurator\font\fontello.woff" />
     <Content Include="js\ckeditor\samples\toolbarconfigurator\lib\codemirror\LICENSE" />
     <Content Include="js\ckeditor\skins\moono\readme.md" />
+    <Content Include="fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="fonts\glyphicons-halflings-regular.woff2" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

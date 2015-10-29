@@ -36,14 +36,22 @@ var databaseSvc = function ($rootScope) {
             datedue: null,
             result: {
                 value: 0,
-                type: 'testresult',
+                type: "testresult",
                 options: [{ text: 'NONE', optvalue: 0 }, { text: 'pass', optvalue: 1 }, { text: 'fail', optvalue: 2 }]
             },
             category1: {
                 value: 0,
-                type: 'singleselect',
+                type: "singleselect",
                 options: [{ text: 'NONE', optvalue: 1 }, { text: 'cat1', optvalue: 1 }, { text: 'cat2', optvalue: 2 }]
-            }
+            },
+            description: {
+                value: "",
+                type:'html'
+            },
+            "Record of Work": {
+            value: "",
+            type:'html'
+        }
         };
         return proc;
     }
