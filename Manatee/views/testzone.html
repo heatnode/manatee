@@ -6,14 +6,9 @@
 <div class="row">
     <div class="col-xs-12">
         <div ng-controller="EditorModalCtrl as EMC">
-            <a ng-click="open('lg', 'bobo')">Open Modal</a>
-            <button type="button" class="btn btn-default" ng-click="toggleAnimation()">Toggle Animation ({{ animationsEnabled }})</button>
+            <a ng-click="open('lg', 'bobobo')">Open Modal</a>
             <div ng-show="selected">Selection from a modal: {{ selected }}</div>
-            <button type="button" class="btn btn-default" ng-click="open()">Open me!</button>
-            <button type="button" class="btn btn-default" ng-click="open('lg', 'bobo')">Large modal</button>
-            <button type="button" class="btn btn-default" ng-click="open('sm')">Small modal</button>
-            <button type="button" class="btn btn-default" ng-click="toggleAnimation()">Toggle Animation ({{ animationsEnabled }})</button>
-            <div ng-show="selected">Selection from a modal: {{ selected }}</div>
+            <div>Text from ckeditor: {{ EMC.text }}</div>
         </div>
     </div>
 </div>
