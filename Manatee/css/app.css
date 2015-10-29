@@ -45,3 +45,8 @@ body {
 }
 */
 /*end modal*/
+
+/* tidy up navigation*/
+a[ng-click]{
+    cursor: pointer;
+}

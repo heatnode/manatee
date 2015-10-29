@@ -1,7 +1,7 @@
 ﻿var EditorModalCtrl = function ($scope, $uibModal, $log) {
     //todo: work on scoping
-    //var self = this;
-    $scope.items = ['item1', 'item2', 'item3'];
+    var self = this;
+    self.items = ['item1', 'item2', 'item3'];
 
     $scope.animationsEnabled = true;
 
@@ -10,15 +10,15 @@
 
             var modalInstance = $uibModal.open({
                 animation: $scope.animationsEnabled,
-                templateUrl: 'myModalContent.html',
-                controller: 'ModalInstanceCtrl',
+                templateUrl: 'views/editorModal.html',
+                controller: 'ModalInstanceCtrl as MIC',
                 size: size,
                 resolve: {
                     items: function () {
-                        return $scope.items;
+                        return self.items;
                     },
                     text: function () {
-                        return $scope.text;
+                        return self.text;
                     },
                 }
             });
@@ -44,9 +44,11 @@ EditorModalCtrl.$inject = ['$scope', '$uibModal','$log'];
 // It is not the same as the $uibModal service used above.
 var ModalInstanceCtrl = function ($scope, $uibModalInstance, items, text) {
     console.log(text);
-    $scope.items = items;
+    var self = this;
+    self.items = items;
+
     $scope.selected = {
-        item: $scope.items[0]
+        item: self.items[0]
     };
 
     $scope.ok = function () {
