@@ -4,6 +4,8 @@
 
     self.procs = [];
 
+    self.title = "he he he suckas";
+
     //todo: move to object ctrl
     self.list = function () {
         self.procs = []; //note json object
@@ -18,6 +20,14 @@
     self.testSave = function () {
         //find dirty form, save?
         //console.log('test save');
+    }
+
+    self.addProc = function () {
+
+        $q.when(db.addProc(self.title)).then(function (result) {
+            self.procs.push(result);
+        });
+
     }
 
     self.resolveTest = function (proc) {
