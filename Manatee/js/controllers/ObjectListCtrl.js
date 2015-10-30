@@ -3,12 +3,10 @@
     var self = this; //for controller as syntax later
 
     self.procs = [];
-
-    self.title = "he he he suckas";
-
+    
     //todo: move to object ctrl
     self.list = function () {
-        self.procs = []; //note json object
+        self.procs = []; 
         $q.when(db.getProcs()).then(function (result) {
             var allrows = result.rows;
             allrows.forEach(function (item) {
@@ -22,9 +20,9 @@
         //console.log('test save');
     }
 
-    self.addProc = function () {
+    self.addProc = function (title) {
 
-        $q.when(db.addProc(self.title)).then(function (result) {
+        $q.when(db.addProc(title)).then(function (result) {
             self.procs.push(result);
         });
 
@@ -34,6 +32,12 @@
         //console.log(proc);
         db.saveProc(proc);
     }
+    // new
+    self.selectedId = null;
+    self.setSelected = function (id) {
+        self.selectedId = id;
+    };
+    //endnew
 
     self.list();
 }

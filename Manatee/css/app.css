@@ -19,8 +19,9 @@ body {
 .alerts {
  position:fixed;
  width:300px;
- right:30px;
- top:12px;
+ /*right:230px;*/
+ left:400px;
+ top:10px;
  z-index:10000; 
 }
   
@@ -33,15 +34,49 @@ body {
     padding: 2px !important;
 }
 /* end alert css */
-/*Playing with full screen modal
-    .modal-dialog {
+
+/*Playing with full screen modal*/
+.modal-dialog {
   width: 98%;
-  height: 92%;
+  height: 735px;
   padding: 0;
 }
 
+.modal-header {
+    padding: 5px !important;
+}
 .modal-content {
   height: 99%;
 }
-*/
+.modal-content .cke_chrome {
+  height: 89%;
+}
+
+/* tidy up navigation*/
+div.list-group-item {
+    cursor: pointer;
+}
+
+div.list-group-item {
+    cursor: pointer;
+}
 /*end modal*/
+
+/* tidy up navigation*/
+a[ng-click]{
+    cursor: pointer;
+}
+
+/* list stuff */
+div.list-group-item {
+    cursor: pointer;
+}
+
+div.list-group-item.selected {
+    background-color: rgb(231,231,231);
+}
+
+div.list-group-item:hover {
+    background-color: rgb(231,231,231);
+}
+/* end list stuff */
