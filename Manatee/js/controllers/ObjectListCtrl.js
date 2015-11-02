@@ -23,7 +23,7 @@
     self.addProc = function (title) {
 
         $q.when(db.addProc(title)).then(function (result) {
-            self.procs.push(result);
+            self.procs.unshift(result);
         });
 
     }

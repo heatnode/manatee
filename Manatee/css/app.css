@@ -72,11 +72,33 @@ div.list-group-item {
     cursor: pointer;
 }
 
-div.list-group-item.selected {
+/*div.list-group-item.selected {
     background-color: rgb(231,231,231);
 }
 
 div.list-group-item:hover {
     background-color: rgb(231,231,231);
+}*/
+
+div.list-group-item.selected {
+    background-color: #FFFFCC;
 }
+
+div.list-group-item:hover {
+    background-color: #FFFFCC;
+}
+
+/*don't like the full row hover, maybe play with a different effect
+    div.list-group-item:hover .objectTitle {
+    background-color: #FFFFCC;
+    border-color: #000000;
+    border-width:1px;
+}*/
+
 /* end list stuff */
+
+/*glyphicons in buttons   
+*/
+.topgroup .glyphicon {
+    margin-right:2px;
+}

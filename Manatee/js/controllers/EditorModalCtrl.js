@@ -1,7 +1,5 @@
 ﻿var EditorModalCtrl = function ($scope, $uibModal, $log) {
     var self = this;
-    //self.items = ['item1', 'item2', 'item3'];
-   // self.text = "";
 
     //$scope.animationsEnabled = true;
     //obj is a business obj (i.e control, procedure)
@@ -10,8 +8,8 @@
         //var opObj = obj;
 
         var editorData = {
-            content: obj[fieldForValue].value,
-            title: obj[fieldForTitle], //todo: convert to object instead of just .title
+            content: obj.fields[fieldForValue].value,
+            title: obj.fields[fieldForTitle].value, 
             label: fieldForValue
         };
         
@@ -31,10 +29,7 @@
             });
 
             modalInstance.result.then(function (returnObj) {
-               // $scope.selected = obj.selectedItem;
-                // console.log(obj.text);
-                //self.text = obj.text;
-                obj[fieldForValue].value = returnObj.content;
+                obj.fields[fieldForValue].value = returnObj.content;
             }, function () {
                 $log.info('Modal dismissed at: ' + new Date());
             });
@@ -54,17 +49,12 @@ EditorModalCtrl.$inject = ['$scope', '$uibModal','$log'];
 // It is not the same as the $uibModal service used above.
 var ModalInstanceCtrl = function ($scope, $uibModalInstance, dataForInstance) {
     var self = this;
-    //self.items = items;
+
     self.content = dataForInstance.content;
     self.title = dataForInstance.title;
     self.label = dataForInstance.label;
 
-    //$scope.selected = {
-    //    item: self.items[0]
-    //};
-
     $scope.ok = function () {
-       // console.log(self.content);
         var retObj = { content: self.content };
         $uibModalInstance.close(retObj);
     };

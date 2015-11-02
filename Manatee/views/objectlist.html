@@ -1,18 +1,18 @@
 ﻿<div ng-controller="ObjectListCtrl as olist" ng-click="olist.testSave()">
     <div class="row">
         <div class="col-xs-12 col-sm-8">
-            <div class="btn-group btn-group-justified" role="group">
+            <div class="btn-group btn-group-justified topgroup" role="group">
                 <div class="btn-group btn-group-sm" role="group">
                     <button type="button" class="btn btn-primary" ng-click="">Save</button>
                 </div>
                 <div class="btn-group btn-group-sm" role="group">
-                    <button type="button" class="btn btn-primary" ng-click="olist.addProc('NEW')">Add Procedure</button>
+                    <button type="button" class="btn btn-primary" ng-click="olist.addProc('NEW')"><span class="glyphicon glyphicon-plus"></span> Procedure</button>
                 </div>
                 <div class="btn-group btn-group-sm" role="group">
-                    <button type="button" class="btn btn-default" ng-click="">Add Issue</button>
+                    <button type="button" class="btn btn-default" ng-click=""><span class="glyphicon glyphicon-plus"></span> Issue</button>
                 </div>
                 <div class="btn-group btn-group-sm" role="group">
-                    <button type="button" class="btn btn-default" ng-click="">Add Workpaper</button>
+                    <button type="button" class="btn btn-default" ng-click=""><span class="glyphicon glyphicon-plus"></span> Workpaper</button>
                 </div>
             </div>
         </div>
@@ -21,44 +21,49 @@
     <div class="row" ng-controller="EditorModalCtrl as EMC">
         <div class="col-xs-12">
             <div class="list-group" >
-                <div ng-click="olist.setSelected(proc._id)" ng-class="{selected: proc._id === olist.selectedId}" class="list-group-item" ng-repeat="proc in olist.procs">
+                <div ng-click="olist.setSelected(proc._id)" ng-class="{selected: proc._id === olist.selectedId}" class="list-group-item"
+                      ng-repeat="proc in olist.procs">
                     <form class="list-group-item-text">
                         <div class="row">
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <h4 class="list-group-item-heading objectTitle">{{ proc.title }}</h4>
-                            </div>
-                            <div class="col-sm-6">
-                                <div class=" pull-right" type="button">
-                                    Issues <span class="badge"> 4 </span>
+                            <div class="col-sm-10">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <h4 class="list-group-item-heading objectTitle">{{ proc.fields.title.value }}</h4>
+                                    </div>
                                 </div>
-                                <div class=" pull-right" >&nbsp;</div>
-                                <div class=" pull-right" >
-                                    Workpapers <span class="badge"> 4 </span>
+
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class="form-group col-xs-2">
+                                            <label class="control-label">Db id</label>
+                                            <div class="form-control-static">{{ proc._id }}</div>
+                                        </div>
+                                        <div class="form-group col-xs-4">
+                                            <!-- don't really need this.. <label class="control-label">Test Results</label>-->
+                                            <div class="btn-group btn-group-xs">
+                                                <!--TODO: text/value would be lookup or this whole thing handled by directive-->
+                                                <label class="btn btn-default" ng-change="olist.resolveTest(proc)" ng-model="proc.fields.result.value" uib-btn-radio="0"><span class="text-warning">Not Tested</span></label>
+                                                <label class="btn btn-default" ng-change="olist.resolveTest(proc)" ng-model="proc.fields.result.value" uib-btn-radio="1"><span class="text-success">Pass</span></label>
+                                                <label class="btn btn-default" ng-change="olist.resolveTest(proc)" ng-model="proc.fields.result.value" uib-btn-radio="2"><span class="text-danger">Fail</span></label>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group col-xs-2">
+                                            <button ng-click="EMC.open(proc, 'description', 'title')" type="button" class="btn btn-default btn-xs"><span>Description </span><span class="glyphicon glyphicon-pencil"></span></button>
+                                        </div>
+                                        <div class="form-group col-xs-2">
+                                            <button ng-click="EMC.open(proc, 'Record of Work', 'title')" type="button" class="btn btn-default btn-xs"><span>Record of Work </span><span class="glyphicon glyphicon-pencil"></span></button>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="row">
-                            <div class="form-group col-xs-2">
-                                <label class="control-label">Db id</label>
-                                <div class="form-control-static">{{ proc._id }}</div>
+                            <div class="col-sm-2">
+                                <ul class="nav nav-pills nav-stacked">
+                                    <li role="presentation" class="info"><a ng-click="">Issues <span class="badge pull-right">4</span></a></li>
+                                    <li role="presentation"><a ng-click="">Workpapers <span class="badge pull-right">4</span></a></li>
+                                </ul>
                             </div>
-                            <div class="form-group col-xs-3">
-                                <label class="control-label">Test Results</label>
-                                <div class="btn-group btn-group-xs">
-                                    <!--TODO: text/value would be lookup or this whole thing handled by directive-->
-                                    <label class="btn btn-default" ng-change="olist.resolveTest(proc)" ng-model="proc.result.value" uib-btn-radio="0"><span class="text-warning">Not Tested</span></label>
-                                    <label class="btn btn-default" ng-change="olist.resolveTest(proc)" ng-model="proc.result.value" uib-btn-radio="1"><span class="text-success">Pass</span></label>
-                                    <label class="btn btn-default" ng-change="olist.resolveTest(proc)" ng-model="proc.result.value" uib-btn-radio="2"><span class="text-danger">Fail</span></label>
-                                </div>
-                            </div>
-                            <div class="form-group col-xs-2">
-                                <button ng-click="EMC.open(proc, 'description', 'title')" type="button" class="btn btn-default btn-xs"><span>Description </span><span class="glyphicon glyphicon-pencil"></span></button>
-                            </div>
-                            <div class="form-group col-xs-2">
-                                <button ng-click="EMC.open(proc, 'Record of Work', 'title')" type="button" class="btn btn-default btn-xs"><span>Record of Work </span><span class="glyphicon glyphicon-pencil"></span></button>
-                            </div>
+                            
                         </div>
                     </form>
                 </div>

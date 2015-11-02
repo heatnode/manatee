@@ -5,13 +5,9 @@
     
     $scope.notify.add({ title: 'test title', body: 'this is your message' });
     $scope.$on('notificationEvent:updated', function (e, value) {
+        //apply is necessary to trigger a digest which will update the values
         $scope.notify.add(value);
         $scope.$apply();
-
-        //apply is necessary to trigger a digest which will update the values
-        //$scope.$apply(function(){
-        //    self.info.title = 'i am a title updated';
-        //});
     });
 }
 

@@ -25,33 +25,53 @@ var databaseSvc = function ($rootScope) {
         })
     };
 
-    function createProc(id, text) {
+    function createProc(id, title) {
         var dbID = 'procedure/' + id;
 
         var proc = {
             _id: dbID,
-            title: text,
-            completed: false,
             type: "procedure",
-            datedue: null,
-            result: {
-                value: 0,
-                type: "testresult",
-                options: [{ text: 'NONE', optvalue: 0 }, { text: 'pass', optvalue: 1 }, { text: 'fail', optvalue: 2 }]
-            },
-            category1: {
-                value: 0,
-                type: "singleselect",
-                options: [{ text: 'NONE', optvalue: 1 }, { text: 'cat1', optvalue: 1 }, { text: 'cat2', optvalue: 2 }]
-            },
-            description: {
-                value: "",
-                type:'html'
-            },
-            "Record of Work": {
-            value: "",
-            type:'html'
-        }
+            fields: {
+                title: {
+                    //later add .label for normalized label
+                    value: title,
+                    type: "string",
+                    validations: { required: true }
+                },
+                completed: {
+                    value: false,
+                    type: "bool",
+                    validations: {}
+                },
+                datedue: {
+                    value: "",
+                    type: "date",
+                    validations: {}
+                },
+                result: {
+                    value: 0,
+                    type: "testresult",
+                    options: [{ text: 'NONE', optvalue: 0 }, { text: 'pass', optvalue: 1 }, { text: 'fail', optvalue: 2 }],
+                    validations: {}
+                },
+                category1: {
+                    value: 0,
+                    type: "singleselect",
+                    options: [{ text: 'NONE', optvalue: 1 }, { text: 'cat1', optvalue: 1 }, { text: 'cat2', optvalue: 2 }],
+                    validations: {}
+                },
+                description: {
+                    value: "",
+                    type: 'html',
+                    validations: {}
+                },
+                //example of field with spaces, may not need if we do label prop
+                "Record of Work": {
+                    value: "",
+                    type: 'html',
+                    validations: {}
+                }
+            }
         };
         return proc;
     }
@@ -87,7 +107,7 @@ var databaseSvc = function ($rootScope) {
         })
         .then(service.db.put(proc))
         .then(function() {
-            var notification = { type: "success", title: "Save Success", body: proc.title };
+            var notification = { type: "success", title: "Save Success", body: proc.fields.title.value };
             $rootScope.$broadcast('notificationEvent:updated', notification);
         })
         .catch(function (err) {

@@ -1,7 +1,7 @@
 ﻿var LandingCtrl = function ($scope, db) {
 
     var self = this; //for controller as syntax later
-    //use "controller as" syntax or not?
+    //use "controller as" syntax
 
     self.info = {
         hasidb: db.indexedDB,
@@ -11,11 +11,8 @@
     }
 
     $scope.$on('dbservicedata:updated', function () {
-        $scope.$apply();
         //apply is necessary to trigger a digest which will update the values
-        //$scope.$apply(function(){
-        //    self.info.title = 'i am a title updated';
-        //});
+        $scope.$apply();
     });
 }
 
