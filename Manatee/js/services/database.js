@@ -34,40 +34,47 @@ var databaseSvc = function ($rootScope) {
             WorkpapersCount: 0,
             fields: {
                 title: {
+                    label:'Title',
                     //later add .label for normalized label
                     value: title,
                     type: "string",
                     validations: { required: true }
                 },
                 completed: {
+                    label: 'Completed',
                     value: false,
                     type: "bool",
                     validations: {}
                 },
                 datedue: {
+                    label: 'Date Due',
                     value: "",
                     type: "date",
                     validations: {}
                 },
                 result: {
+                    label: '',
                     value: 0,
                     type: "testresult",
                     options: [{ text: 'NONE', optvalue: 0 }, { text: 'pass', optvalue: 1 }, { text: 'fail', optvalue: 2 }],
                     validations: {}
                 },
                 category1: {
+                    label: 'Category1',
                     value: 0,
                     type: "singleselect",
                     options: [{ text: 'NONE', optvalue: 1 }, { text: 'cat1', optvalue: 1 }, { text: 'cat2', optvalue: 2 }],
                     validations: {}
                 },
                 description: {
+                    label: 'Description',
                     value: "",
                     type: 'html',
                     validations: {}
                 },
                 //example of field with spaces, may not need if we do label prop
                 "Record of Work": {
+                    label: 'Record of Work',
                     value: "",
                     type: 'html',
                     validations: {}

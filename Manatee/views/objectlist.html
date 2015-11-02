@@ -54,7 +54,7 @@
                                             <button ng-click="EMC.open(proc, 'Record of Work', 'title')" type="button" class="btn btn-default btn-xs"><span>Record of Work </span><span class="glyphicon glyphicon-pencil"></span></button>
                                         </div>
                                         <!--myname="{{ proc.fields.title.value }}-->
-                                        <detail-element objectfield="proc.fields.title"></detail-element>
+                                        <detail-element ng-repeat="field in proc.fields" objectfield="field"></detail-element>
                                     </div>
                                 </div>
                             </div>

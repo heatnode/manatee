@@ -1,3 +1,9 @@
 ﻿<div class="form-group col-xs-2">
-    <b>hello everybahdy</b>: {{ objectfield.value }}
+    <b ng-if="objectfield.label">{{objectfield.label}}:</b> {{ objectfield.value }}
+    <div ng-if="objectfield.type =='html'">htmlfield</div>
+    <div ng-if="objectfield.type =='bool'">bool</div>
+    <div ng-if="objectfield.type =='string'">string</div>
+    <div ng-if="objectfield.type =='date'">date</div>
+    <div ng-if="objectfield.type =='testresult'">testresult</div>
+    <div ng-if="objectfield.type =='singleselect'">singleselect</div>
 </div>
