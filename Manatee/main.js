@@ -12,6 +12,7 @@ Manatee.controller('ModalInstanceCtrl', ModalInstanceCtrl);
 Manatee.controller('EditorModalCtrl', EditorModalCtrl);
 Manatee.controller('CkeditorCtrl', CkeditorCtrl);
 Manatee.directive('activeLink', activeLink);
+Manatee.directive('detailElement', detailElement);
 //this was borrowed
 Manatee.filter('firstUpper', function () {
     return function (input, scope) {

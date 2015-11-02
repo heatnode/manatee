@@ -28,14 +28,24 @@
 
     }
 
+    self.addIssue = function (title) {
+        console.log('add' + title);
+        if (self.selectedObj) {
+            $q.when(db.addIssue(self.selectedObj, title)).then(function (result) {
+                //self.procs.unshift(result);
+                console.log(self.selectedObj);
+            });
+        }
+    }
+
     self.resolveTest = function (proc) {
         //console.log(proc);
         db.saveProc(proc);
     }
     // new
-    self.selectedId = null;
-    self.setSelected = function (id) {
-        self.selectedId = id;
+    self.selectedObj = null;
+    self.setSelected = function (obj) {
+        self.selectedObj = obj;
     };
     //endnew
 

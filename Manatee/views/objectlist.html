@@ -9,7 +9,7 @@
                     <button type="button" class="btn btn-primary" ng-click="olist.addProc('NEW')"><span class="glyphicon glyphicon-plus"></span> Procedure</button>
                 </div>
                 <div class="btn-group btn-group-sm" role="group">
-                    <button type="button" class="btn btn-default" ng-click=""><span class="glyphicon glyphicon-plus"></span> Issue</button>
+                    <button type="button" class="btn btn-default" ng-click="olist.addIssue('NEW')"><span class="glyphicon glyphicon-plus"></span> Issue</button>
                 </div>
                 <div class="btn-group btn-group-sm" role="group">
                     <button type="button" class="btn btn-default" ng-click=""><span class="glyphicon glyphicon-plus"></span> Workpaper</button>
@@ -21,7 +21,7 @@
     <div class="row" ng-controller="EditorModalCtrl as EMC">
         <div class="col-xs-12">
             <div class="list-group" >
-                <div ng-click="olist.setSelected(proc._id)" ng-class="{selected: proc._id === olist.selectedId}" class="list-group-item"
+                <div ng-click="olist.setSelected(proc)" ng-class="{selected: proc._id === olist.selectedObj._id}" class="list-group-item"
                       ng-repeat="proc in olist.procs">
                     <form class="list-group-item-text">
                         <div class="row">
@@ -47,20 +47,21 @@
                                                 <label class="btn btn-default" ng-change="olist.resolveTest(proc)" ng-model="proc.fields.result.value" uib-btn-radio="2"><span class="text-danger">Fail</span></label>
                                             </div>
                                         </div>
-
                                         <div class="form-group col-xs-2">
                                             <button ng-click="EMC.open(proc, 'description', 'title')" type="button" class="btn btn-default btn-xs"><span>Description </span><span class="glyphicon glyphicon-pencil"></span></button>
                                         </div>
                                         <div class="form-group col-xs-2">
                                             <button ng-click="EMC.open(proc, 'Record of Work', 'title')" type="button" class="btn btn-default btn-xs"><span>Record of Work </span><span class="glyphicon glyphicon-pencil"></span></button>
                                         </div>
+                                        <!--myname="{{ proc.fields.title.value }}-->
+                                        <detail-element objectfield="proc.fields.title"></detail-element>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-sm-2">
                                 <ul class="nav nav-pills nav-stacked">
-                                    <li role="presentation" class="info"><a ng-click="">Issues <span class="badge pull-right">4</span></a></li>
-                                    <li role="presentation"><a ng-click="">Workpapers <span class="badge pull-right">4</span></a></li>
+                                    <li ng-if="proc.IssuesCount>0" role="presentation" class=""><a ng-click="">Issues:<span class="pull-right badge alert-danger" >{{proc.IssuesCount}}</span></a></li>
+                                    <li ng-if="proc.WorkpapersCount>0" role="presentation" class="" ><a ng-click="">Workpapers:<span class="pull-right badge alert-primary">{{proc.WorkpapersCount}}</span></a></li>
                                 </ul>
                             </div>
                             

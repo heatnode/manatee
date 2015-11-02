@@ -370,6 +370,8 @@
     <Content Include="js\controllers\ObjectListCtrl.js" />
     <Content Include="js\controllers\SyncCtrl.js" />
     <Content Include="js\directives\activelink.js" />
+    <Content Include="js\directives\detailElement.js" />
+    <Content Include="js\directives\detailElementCtrl.js" />
     <Content Include="js\libraries\angular-animate.min.js" />
     <Content Include="js\libraries\angular-ckeditor.min.js" />
     <Content Include="js\libraries\pouchdb\pouchdb.find.min.js" />
@@ -416,6 +418,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="views\detailElement.html" />
     <Content Include="views\editorModal.html" />
     <Content Include="views\landing.html" />
     <Content Include="views\objectlist.html" />
