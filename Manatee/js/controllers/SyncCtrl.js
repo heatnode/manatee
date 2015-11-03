@@ -29,7 +29,6 @@
     self.list = function () {
         self.dbItems = []; 
         $q.when(sync.db.getProcs()).then(function (result) {
-            //console.log(result);
             var allrows = result.rows;
             allrows.forEach(function (item) {
                 self.dbItems.push(item);

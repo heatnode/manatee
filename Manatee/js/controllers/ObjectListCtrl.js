@@ -2,46 +2,68 @@
 
     var self = this; //for controller as syntax later
 
-    self.procs = [];
-    
-    //todo: move to object ctrl
-    self.list = function () {
-        self.procs = []; 
+    init();
+
+    function init() {
+        self.objects = [];
+        updateList();
+        self.objectFocus = 'procedure';
+    }
+
+    function updateList() {
+        
         $q.when(db.getProcs()).then(function (result) {
+            self.objects = [];
             var allrows = result.rows;
             allrows.forEach(function (item) {
-                self.procs.push(item.doc);
+                self.objects.push(item.doc);
             });
         });
     }
 
-    self.testSave = function () {
-        //find dirty form, save?
-        //console.log('test save');
+    var objectOperations = {
+        procedure: {
+            saveToDB: db.saveProc
+        },
+        issue: {
+            saveToDB: db.saveIssue
+        }
+    }
+
+    self.saveObject = function (object) {
+        objectOperations[object.type].saveToDB(object);
     }
 
     self.addProc = function (title) {
-
         $q.when(db.addProc(title)).then(function (result) {
-            self.procs.unshift(result);
+            //self.objects.unshift(result);
+            updateList();
         });
-
     }
 
     self.addIssue = function (title) {
-        console.log('add' + title);
         if (self.selectedObj) {
             $q.when(db.addIssue(self.selectedObj, title)).then(function (result) {
-                //self.procs.unshift(result);
-                console.log(self.selectedObj);
+                //self.objects.unshift(result);
             });
         }
     }
 
     self.resolveTest = function (proc) {
-        //console.log(proc);
         db.saveProc(proc);
     }
+
+    self.showIssues = function(proc) {
+        self.objectFocus = 'issues';
+        console.log(proc._id);
+    }
+    self.showWorkpapers = function (proc) {
+        self.objectFocus = 'workpapers';
+        console.log(proc._id);
+    }
+    //may be  too shallow (fields)
+    //$watchCollection('self.objects', function () { });
+
     // new
     self.selectedObj = null;
     self.setSelected = function (obj) {
@@ -49,7 +71,7 @@
     };
     //endnew
 
-    self.list();
+    
 }
 
 // The $inject property of every controller (and pretty much every other type of object in Angular) 

@@ -4,7 +4,8 @@ var databaseSvc = function ($rootScope) {
     var db;
 
     service.createDB = function () {
-        db = new PouchDB('manateeStore');
+        //auto compact cleans up multiple changes to same doc.field
+        db = new PouchDB('manateeStore', { auto_compaction: true }); 
         //todo: long term don't expose this obviously
         service.db = db;
     }
@@ -20,8 +21,9 @@ var databaseSvc = function ($rootScope) {
 
     service.reInitDB = function () {
         return db.destroy().then(function () {
-            db = new PouchDB('manateeStore');
-            service.db = db;
+            //db = new PouchDB('manateeStore');
+            //service.db = db;
+            service.createDB();
         })
     };
 
@@ -86,7 +88,6 @@ var databaseSvc = function ($rootScope) {
 
     function createIssue(id, procId, title) {
         var dbID = 'issue_' + procId + "_" + id;
-        console.log(dbID);
         var issue = {
             _id: dbID,
             type: "issue",
@@ -122,16 +123,35 @@ var databaseSvc = function ($rootScope) {
         return issue;
     }
 
+    function createWorkpaper(id, parentId, title) {
+        //db.put({
+        //    _id: 'meowth',
+        //    _attachments: {
+        //        'meowth.png': {
+        //            content_type: 'image/png',
+        //            data: 'iVBORw0KGgoAAAANSUhEUgAAACgAAAAkCAIAAAB0Xu9BAAAABGdBTUEAALGPC/xhBQAAAuNJREFUWEetmD1WHDEQhDdxRMYlnBFyBIccgdQhKVcgJeQMpE5JSTd2uqnvIGpVUqmm9TPrffD0eLMzUn+qVnXPwiFd/PP6eLh47v7EaazbmxsOxjhTT88z9hV7GoNF1cUCvN7TTPv/gf/+uQPm862MWTL6fff4HfDx4S79/oVAlAUwqOmYR0rnazuFnhfOy/ErMKkcBFOr1vOjUi2MFn4nuMil6OPh5eGANLhW3y6u3aH7ijEDCxgCvzFmimvc95TekZLyMSeJC68Bkw0kqUy1K87FlpGZqsGFCyqEtQNDdFUtFctTiuhnPKNysid/WFEFLE2O102XJdEE+8IgeuGsjeJyGHm/xHvQ3JtKVsGGp85g9rK6xMHtvHO9+WACYjk5vkVM6XQ6OZubCJvTfPicYPeHO2AKFl5NuF5UK1VDUbeLxh2BcRGKTQE3irHm3+vPj6cfCod50Eqv5QxtwBQUGhZhbrGVuRia1B4MNp6edwBxld2sl1splfHCwfsvCZfrCQyWmX10djjOlWJSSy3VQlS6LmfrgNvaieRWx1LZ6s9co+P0DLsy3OdLU3lWRclQsVcHJBcUQ0k9/WVVrmpRzYQzpgAdQcAXxZzUnFX3proannrYH+Vq6KkLi+UkarH09mC8YPr2RMWOlEqFkQClsykGEv7CqCUbXcG8+SaGvJ4a8d4y6epND+pEhxoN0vWUu5ntXlFb5/JT7JfJJqoTdy9u9qc7ax3xJRHqJLADWEl23cFWl4K9fvoaCJ2BHpmJ3s3z+O0U/DmzdMjB9alWZtg4e3yxzPa7lUR7nkvxLHO9+tvJX3mtSDpwX8GajB283I8R8a7D2MhUZr1iNWdny256yYLd52DwRYBtRMvE7rsmtxIUE+zLKQCDO4jlxB6CZ8M17GhuY+XTE8vNhQiIiSE82ZsGwk1pht4ZSpT0YVpon6EvevOXXH8JxVR78QzNuamupW/7UB7wO/+7sG5V4ekXb4cL5Lyv+4IAAAAASUVORK5CYII='
+        //        }
+        //    }
+        //}).then(function () {
+        //    return db.getAttachment('meowth', 'meowth.png');
+        //}).then(function (blob) {
+        //    var url = URL.createObjectURL(blob);
+        //    var img = document.createElement('img');
+        //    img.src = url;
+        //    document.body.appendChild(img);
+        //}).catch(function (err) {
+        //    console.log(err);
+        //});
+    }
+
     service.addProc = function (title) {
         var proc; //using closure so we have the value in the final step
         return getSeqNumber()
             .then(function (id) {
                 proc = createProc(id, title);
-                //console.log(proc);
                 return service.db.put(proc);
             })
             .then(function (response) {
-                console.log('proc added');
                 return proc;
             })
             .catch(function (err) {
@@ -145,7 +165,6 @@ var databaseSvc = function ($rootScope) {
         return getSeqNumber()
             .then(function (id) {
                 issue = createIssue(id, proc._id, title);
-                console.log(issue);
                 return service.db.put(issue);
             })
             .then(function (response) {
@@ -166,10 +185,14 @@ var databaseSvc = function ($rootScope) {
         saveObject(proc);
     }
 
+    service.saveIssue = function (issue) {
+        saveObject(issue);
+    }
+
     function saveObject(obj) {
-        //todo: probably should return promise so we can let the UI
-        //wait or add this to a queue
-        //todo: maybe use .get api
+        // todo: probably should return promise so we can let the UI
+        // wait or add this to a queue
+        // todo: maybe use .get api
         service.findObject(obj._id).then(function (results) {
             //this is a temp hack for "second+" save on same object. Probably not viable long-term, but works for
             //now to overcome refresh issue
@@ -188,7 +211,8 @@ var databaseSvc = function ($rootScope) {
     }
 
     service.getProcs = function () {
-        return db.allDocs({ startkey: 'procedure_', endkey: 'procedure_\uffff', include_docs: true, descending: false });
+        //todo: reconsider sorting
+        return db.allDocs({ startkey: 'procedure_\uffff', endkey: 'procedure_', include_docs: true, descending: true });
     }
 
     service.getIssuesForID = function (procID) {
@@ -197,12 +221,12 @@ var databaseSvc = function ($rootScope) {
 
     function getSeqNumber() {
         return db.info().then(function (result) {
-                //console.log('database seq is ' + result.update_seq);
                 return result.update_seq;
             });
     }
 
     //------------------ just testing here --------------
+
     var data = {
         hasIndexedDB: null,
         hasWebSQL: null,

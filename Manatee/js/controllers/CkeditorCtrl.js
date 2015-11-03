@@ -9,7 +9,7 @@
 
     // Called when the editor is completely ready.
     $scope.onReady = function () {
-        console.log('ready');
+        //console.log('ready');
     };
 }
 

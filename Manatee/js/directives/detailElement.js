@@ -9,7 +9,8 @@
             fieldname: '@',
             dataobject: '=',
             testresultfunc: '&',
-            editorfunc: '&'
+            editorfunc: '&',
+            savefunc: '&' //migrate others to just use this
         }
         //link: function (scope, element, attrs) {
         //}

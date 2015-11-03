@@ -5,8 +5,6 @@
     //obj is a business obj (i.e control, procedure)
     self.open = function (obj, fieldForValue, fieldForTitle) {
 
-        //var opObj = obj;
-        //console.log('here');
         var editorData = {
             content: obj.fields[fieldForValue].value,
             title: obj.fields[fieldForTitle].value, 
