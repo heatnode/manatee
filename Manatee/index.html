@@ -37,17 +37,18 @@
       </div>
     </nav>
 
-    <div class="container" ng-view>
-    </div>
-    <div ng-controller="AlertCtrl">
-        <div class="alerts" ng-shw="notify.queue.length>0">
-            <div class="alert alert-{{(m.type)||'info'}} alert-dismissable fade in pull-right" ng-repeat="m in notify.queue">
-                <button type="button" class="close" data-dismiss="alert">×</button>
-                <label>{{m.title}}</label>
-                <div>{{m.body}}</div>
-            </div>
-        </div>
-   </div> 
+    <div class="container" ng-view></div>
+
+      <div ng-controller="AlertCtrl as AC">
+          <script type="text/ng-template" id="alert.html">
+              <div class="alert topAlert" role="alert">
+                  <div ng-transclude></div>
+              </div>
+          </script>
+          <uib-alert ng-repeat="alert in AC.alerts" template-url="alert.html"
+                     type="{{alert.type}}" dismiss-on-timeout="1500" close="AC.closeAlert($index)">{{alert.msg}}</uib-alert>
+          <button type="button" class='btn btn-default' ng-click="AC.addAlert()">Add Alert</button>
+      </div>
     <!-- Various libraries -->
     <script src="js/libraries/angular.min.js"></script>  
     <script src="js/libraries/angular-route.min.js"></script>
@@ -91,9 +92,6 @@
     https://github.com/angular-ui/bootstrap/issues/3676
 
     todo:
-    nganimate
-    schema
-    sync (mock)
     list of controls, drill down to list of procs
     form controls by type (indexed/denoted by strings "multiselect", "single select", "html", "bool or boolradio etc")
     incorporate progress bars and todos? possibly on landing -- cool circle graph thing

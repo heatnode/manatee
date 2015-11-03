@@ -1,4 +1,4 @@
-var databaseSvc = function ($rootScope) {
+var databaseSvc = function ($rootScope, notify) {
 
     var service = {};
     var db;
@@ -203,7 +203,7 @@ var databaseSvc = function ($rootScope) {
         .then(service.db.put(obj))
         .then(function () {
             var notification = { type: "success", title: "Save Success", body: obj.fields.title.value };
-            $rootScope.$broadcast('notificationEvent:updated', notification);
+            notify.add(notification);
         })
         .catch(function (err) {
             console.log(err);
@@ -267,4 +267,4 @@ var databaseSvc = function ($rootScope) {
     return service;
 };
 
-databaseSvc.$inject = ['$rootScope'];
+databaseSvc.$inject = ['$rootScope', 'notify'];
