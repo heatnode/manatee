@@ -29,12 +29,13 @@
             <div class="list-group" >
                 <div ng-click="olist.setSelected(dataobj)" ng-class="{selected: dataobj._id === olist.selectedObj._id}" 
                      class="list-group-item" ng-repeat="dataobj in olist.objects track by $index">
-                    <form class="list-group-item-text">
+                    
+                    <!--<form class="list-group-item-text">-->
                         <div class="row">
                             <div class="col-sm-10">
                                 <div class="row">
                                     <div class="col-sm-12">
-                                        <h4 class="list-group-item-heading objectTitle">{{ dataobj.fields.title.value }}</h4>
+                                        <h4 class="list-group-item-heading objectTitle" e-style="width: 600px; margin-bottom: 10px;" editable-text="dataobj.fields.title.value">{{ dataobj.fields.title.value }}</h4>
                                     </div>
                                 </div>
 
@@ -59,7 +60,7 @@
                             </div>
                             
                         </div>
-                    </form>
+                    <!--</form>-->
                 </div>
             </div>
         </div>

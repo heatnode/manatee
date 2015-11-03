@@ -1,4 +1,4 @@
-﻿var Manatee = angular.module('Manatee', ['ngRoute', 'ui.bootstrap', 'ngAnimate', 'ckeditor']);
+﻿var Manatee = angular.module('Manatee', ['ngRoute', 'ui.bootstrap', 'ngAnimate', 'ckeditor', 'xeditable']);
 
 Manatee.factory('databaseSvc', databaseSvc);
 Manatee.factory('syncSvc', syncSvc);
@@ -43,3 +43,8 @@ var configFunction = function ($routeProvider) {
 configFunction.$inject = ['$routeProvider'];
 
 Manatee.config(configFunction);
+
+// this makes inline edit pretty
+Manatee.run(function (editableOptions, editableThemes) {
+    editableOptions.theme = 'bs3'; // bootstrap3 theme. Can be also 'bs2', 'default'
+});
