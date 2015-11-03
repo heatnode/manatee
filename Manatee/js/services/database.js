@@ -1,4 +1,4 @@
-var databaseSvc = function ($rootScope) {
+var databaseSvc = function ($rootScope, notify) {
 
     var service = {};
     var db;
@@ -93,27 +93,31 @@ var databaseSvc = function ($rootScope) {
             type: "issue",
             fields: {
                 title: {
-                    //later add .label for normalized label
+                    label:'Title',
                     value: title,
                     type: "string",
                     validations: { required: true }
                 },
                 code: {
+                    label: 'Code',
                     value: "",
                     type: "string",
                     validations: {}
                 },
                 release: {
+                    label: 'Release',
                     value: false,
                     type: "release",
                     validations: {}
                 },
                 finding: {
+                    label: 'Finding',
                     value: "",
                     type: "html",
                     validations: {}
                 },
                 levels: {
+                    label: 'Levels',
                     value: "",
                     type: "html",
                     validations: {}
@@ -203,7 +207,7 @@ var databaseSvc = function ($rootScope) {
         .then(service.db.put(obj))
         .then(function () {
             var notification = { type: "success", title: "Save Success", body: obj.fields.title.value };
-            $rootScope.$broadcast('notificationEvent:updated', notification);
+            notify.add(notification);
         })
         .catch(function (err) {
             console.log(err);
@@ -267,4 +271,4 @@ var databaseSvc = function ($rootScope) {
     return service;
 };
 
-databaseSvc.$inject = ['$rootScope'];
+databaseSvc.$inject = ['$rootScope', 'notify'];

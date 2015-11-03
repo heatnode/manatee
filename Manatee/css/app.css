@@ -30,8 +30,19 @@ body {
  z-index:11;
  min-width:250px;
 }
+
 .alert {
     padding: 2px !important;
+}
+
+.topAlert {
+    position: absolute;
+    width: 355px;
+    top: 8px;
+    z-index: 10000;
+    color: antiquewhite;
+    background-color:#333333;
+    left: 464px;
 }
 /* end alert css */
 

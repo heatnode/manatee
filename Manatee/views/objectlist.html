@@ -6,10 +6,10 @@
                     <button type="button" class="btn btn-primary" ng-click="">Save</button>
                 </div>
                 <div class="btn-group btn-group-sm" role="group">
-                    <button type="button" class="btn btn-primary" ng-click="olist.addProc('NEW')"><span class="glyphicon glyphicon-plus"></span> Procedure</button>
+                    <button type="button" class="btn btn-primary" ng-click="olist.addProc('NEW Proc')"><span class="glyphicon glyphicon-plus"></span> Procedure</button>
                 </div>
                 <div class="btn-group btn-group-sm" role="group">
-                    <button type="button" class="btn btn-default" ng-click="olist.addIssue('NEW')"><span class="glyphicon glyphicon-plus"></span> Issue</button>
+                    <button type="button" class="btn btn-default" ng-click="olist.addIssue('NEW Issue')"><span class="glyphicon glyphicon-plus"></span> Issue</button>
                 </div>
                 <div class="btn-group btn-group-sm" role="group">
                     <button type="button" class="btn btn-default" ng-click=""><span class="glyphicon glyphicon-plus"></span> Workpaper</button>
@@ -17,6 +17,12 @@
             </div>
         </div>
     </div>
+
+    <ul class="breadcrumb" ng-if="olist.objectFocus != 'procedure'">
+        <li><a ng-click="olist.showProcs()">Procedures</a></li>
+        <li class="active">{{ olist.selectedObj.fields.title.value }}</li>
+    </ul>
+
     <div class="row" ng-controller="EditorModalCtrl as EMC">
         <div class="col-xs-12">
             <div class="list-group" >

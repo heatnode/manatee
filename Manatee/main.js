@@ -11,6 +11,8 @@ Manatee.controller('AlertCtrl', AlertCtrl);
 Manatee.controller('ModalInstanceCtrl', ModalInstanceCtrl);
 Manatee.controller('EditorModalCtrl', EditorModalCtrl);
 Manatee.controller('CkeditorCtrl', CkeditorCtrl);
+//Manatee.controller('AlertDemoCtrl', AlertDemoCtrl);
+
 Manatee.directive('activeLink', activeLink);
 Manatee.directive('detailElement', detailElement);
 //this was borrowed

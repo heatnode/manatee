@@ -2,22 +2,26 @@
 
     var self = this; //for controller as syntax later
 
+    self.showProcs = function () {
+        self.objectFocus = 'procedure';
+        $q.when(db.getProcs()).then(function (result) {
+            updateList(result)
+        });
+    }
+
     init();
 
     function init() {
         self.objects = [];
-        updateList();
-        self.objectFocus = 'procedure';
+        self.showProcs();
+        
     }
 
-    function updateList() {
-        
-        $q.when(db.getProcs()).then(function (result) {
-            self.objects = [];
-            var allrows = result.rows;
-            allrows.forEach(function (item) {
-                self.objects.push(item.doc);
-            });
+    function updateList(result) {
+        self.objects = [];
+        var allrows = result.rows;
+        allrows.forEach(function (item) {
+            self.objects.push(item.doc);
         });
     }
 
@@ -35,10 +39,10 @@
     }
 
     self.addProc = function (title) {
-        $q.when(db.addProc(title)).then(function (result) {
+        $q.when(db.addProc(title)).then(showProcs());
             //self.objects.unshift(result);
-            updateList();
-        });
+            //showProcs();
+        //});
     }
 
     self.addIssue = function (title) {
@@ -54,11 +58,15 @@
     }
 
     self.showIssues = function(proc) {
-        self.objectFocus = 'issues';
-        console.log(proc._id);
+        self.objectFocus = 'issue';
+        //todo: refactor with "updatelist"
+        $q.when(db.getIssuesForID(proc._id)).then(function (result) {
+            updateList(result)
+        });
     }
+
     self.showWorkpapers = function (proc) {
-        self.objectFocus = 'workpapers';
+        self.objectFocus = 'workpaper';
         console.log(proc._id);
     }
     //may be  too shallow (fields)
