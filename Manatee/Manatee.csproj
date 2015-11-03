@@ -70,6 +70,7 @@
     <Content Include="css\bootstrap.min.css" />
     <Content Include="css\freeicons\Preview.png" />
     <Content Include="css\freeicons\readme.txt" />
+    <Content Include="css\xeditable.css" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="index.html" />
     <Content Include="js\ckeditor\adapters\jquery.js" />
@@ -376,6 +377,7 @@
     <Content Include="js\libraries\angular-ckeditor.min.js" />
     <Content Include="js\libraries\pouchdb\pouchdb.find.min.js" />
     <Content Include="js\libraries\ui-bootstrap-tpls-0.14.3.min.js" />
+    <Content Include="js\libraries\xeditable.min.js" />
     <Content Include="js\services\database.js" />
     <Content Include="js\libraries\angular-route.min.js" />
     <Content Include="js\libraries\angular.min.js" />
