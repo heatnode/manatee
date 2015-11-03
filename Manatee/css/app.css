@@ -13,6 +13,8 @@ body {
 /* various cleanups*/
 .objectTitle {
     margin-left:-6px !important;
+    border: none !important;
+    margin-bottom: 10px;
 }
 
 /* end alert css */
