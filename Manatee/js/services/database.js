@@ -93,27 +93,31 @@ var databaseSvc = function ($rootScope, notify) {
             type: "issue",
             fields: {
                 title: {
-                    //later add .label for normalized label
+                    label:'Title',
                     value: title,
                     type: "string",
                     validations: { required: true }
                 },
                 code: {
+                    label: 'Code',
                     value: "",
                     type: "string",
                     validations: {}
                 },
                 release: {
+                    label: 'Release',
                     value: false,
                     type: "release",
                     validations: {}
                 },
                 finding: {
+                    label: 'Finding',
                     value: "",
                     type: "html",
                     validations: {}
                 },
                 levels: {
+                    label: 'Levels',
                     value: "",
                     type: "html",
                     validations: {}

@@ -45,9 +45,11 @@
                   <div ng-transclude></div>
               </div>
           </script>
-          <uib-alert ng-repeat="alert in AC.alerts" template-url="alert.html"
-                     type="{{alert.type}}" dismiss-on-timeout="1500" close="AC.closeAlert($index)">{{alert.msg}}</uib-alert>
-          <button type="button" class='btn btn-default' ng-click="AC.addAlert()">Add Alert</button>
+          <uib-alert ng-repeat="alert in AC.alerts" 
+                     template-url="alert.html"
+                     type="{{alert.type}}" 
+                     dismiss-on-timeout="1500" 
+                     close="AC.closeAlert($index)">{{alert.msg}}</uib-alert>
       </div>
     <!-- Various libraries -->
     <script src="js/libraries/angular.min.js"></script>  

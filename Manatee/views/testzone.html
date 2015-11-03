@@ -16,15 +16,3 @@
         <hr />
     </div>
 </div>
-
-<div ng-controller="AlertDemoCtrl">
-    <script type="text/ng-template" id="alert.html">
-        <div class="alert topAlert" role="alert">
-            <div ng-transclude></div>
-        </div>
-    </script>
-
-    <uib-alert ng-repeat="alert in alerts" template-url="alert.html"
-                type="{{alert.type}}" dismiss-on-timeout="1500" close="closeAlert($index)">{{alert.msg}}</uib-alert>
-    <button type="button" class='btn btn-default' ng-click="addAlert()">Add Alert</button>
-</div>
