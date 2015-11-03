@@ -39,8 +39,14 @@ var databaseSvc = function ($rootScope, notify) {
                     label:'Title',
                     //later add .label for normalized label
                     value: title,
-                    type: "string",
+                    type: "title", //long term, this would just be string, now using this as a hack to treat it in a special way
                     validations: { required: true }
+                },
+                code: {
+                    label: 'Code',
+                    value: "",
+                    type: "string",
+                    validations: {}
                 },
                 completed: {
                     label: 'Completed',
@@ -95,7 +101,7 @@ var databaseSvc = function ($rootScope, notify) {
                 title: {
                     label:'Title',
                     value: title,
-                    type: "string",
+                    type: "title",
                     validations: { required: true }
                 },
                 code: {
@@ -128,6 +134,32 @@ var databaseSvc = function ($rootScope, notify) {
     }
 
     function createWorkpaper(id, parentId, title) {
+        var dbID = 'issue_' + procId + "_" + id;
+        var issue = {
+            _id: dbID,
+            type: "issue",
+            fields: {
+                title: {
+                    label: 'Title',
+                    value: title,
+                    type: "title",
+                    validations: { required: true }
+                },
+                code: {
+                    label: 'Code',
+                    value: "",
+                    type: "string",
+                    validations: {}
+                },
+                release: {
+                    label: 'Release',
+                    value: false,
+                    type: "release",
+                    validations: {}
+                },
+            }
+        };
+        return issue;
         //db.put({
         //    _id: 'meowth',
         //    _attachments: {
@@ -186,18 +218,18 @@ var databaseSvc = function ($rootScope, notify) {
     }
 
     service.saveProc = function (proc) {
-        saveObject(proc);
+        return saveObject(proc);
     }
 
     service.saveIssue = function (issue) {
-        saveObject(issue);
+        return saveObject(issue);
     }
 
     function saveObject(obj) {
         // todo: probably should return promise so we can let the UI
         // wait or add this to a queue
         // todo: maybe use .get api
-        service.findObject(obj._id).then(function (results) {
+        return service.findObject(obj._id).then(function (results) {
             //this is a temp hack for "second+" save on same object. Probably not viable long-term, but works for
             //now to overcome refresh issue
             //prior revision number

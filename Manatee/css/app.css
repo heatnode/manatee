@@ -49,16 +49,19 @@ body {
 /*Playing with full screen modal*/
 .modal-dialog {
   width: 98%;
-  height: 700px;
+  height: 690px;
   padding: 0;
 }
 
 .modal-header {
-    padding: 5px !important;
+    padding: 4px !important;
 }
+
 .modal-content {
   height: 99%;
+  margin-top:-18px;
 }
+
 .modal-content .cke_chrome {
   height: 89%;
 }
@@ -117,4 +120,53 @@ div.list-group-item:hover {
 /* clean up badges */
 .label-as-badge {
     border-radius: 1em;
+}
+
+/* clean up breadcrumbs */
+
+/*customize breadcrumb*/
+.breadcrumb {
+     /*background-color: #FAFAFA;*/
+     background-color: #FFF;
+     border-radius: 0;
+     -moz-border-radius: 0;
+     -webkit-border-radius: 0;
+     -o-border-radius: 0;
+     border: 0px solid rgba(255, 250, 250, 1); 
+}
+
+/*change breadcrumb links color*/
+.breadcrumb a {
+     color: #666;
+}
+
+.breadcrumb a:hover {
+     /*text-decoration: none;*/
+}
+
+/*change active color*/
+.breadcrumb > .active {
+     color: #9CD05F;
+}
+
+.breadcrumb li {
+    font-size: 14px;
+    font-weight:500;
+}
+
+/*change breadcrumb separator to raquo symbol*/
+.breadcrumb > li + li:before {
+     content: "\00BB";
+     /*content: "\232A\00a0";*/
+     color: #aaa;
+}
+/*end breadcrumb cleanup*/
+
+/* smaller inputs*/
+  .input-xs {
+    height: 22px;
+    padding: 2px 5px;
+    font-size: 12px;
+    line-height: 1.5; //If Placeholder of the input is moved up, rem/modify this.
+    border-radius: 3px;
 }

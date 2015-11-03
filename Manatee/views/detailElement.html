@@ -12,3 +12,8 @@
 <div  ng-if="ofield.type =='html'" class="form-group col-xs-2">
     <button ng-click="showCKEditorModal()" type="button" class="btn btn-default btn-xs"><span>{{ofield.label}} </span><span class="glyphicon glyphicon-pencil"></span></button>
 </div>
+
+<div ng-if="ofield.type =='string'" class="form-group col-xs-2">
+    <!--<label class="control-label">:</label>-->
+    <input type="text" placeholder="{{ofield.label}}" class="form-control input-xs"  ng-model="ofield.value"/>
+</div>

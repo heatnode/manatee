@@ -1,9 +1,10 @@
 ﻿var ObjectListCtrl = function ($scope, db, $q) {
 
     var self = this; //for controller as syntax later
-
+    self.drillDownObj = null;
     self.showProcs = function () {
         self.objectFocus = 'procedure';
+        self.drillDownObj = null;
         $q.when(db.getProcs()).then(function (result) {
             updateList(result)
         });
@@ -35,7 +36,7 @@
     }
 
     self.saveObject = function (object) {
-        objectOperations[object.type].saveToDB(object);
+        return objectOperations[object.type].saveToDB(object);
     }
 
     self.addProc = function (title) {
@@ -54,12 +55,12 @@
     }
 
     self.resolveTest = function (proc) {
-        db.saveProc(proc);
+        return db.saveProc(proc);
     }
 
     self.showIssues = function(proc) {
         self.objectFocus = 'issue';
-        //todo: refactor with "updatelist"
+        self.drillDownObj = proc;
         $q.when(db.getIssuesForID(proc._id)).then(function (result) {
             updateList(result)
         });

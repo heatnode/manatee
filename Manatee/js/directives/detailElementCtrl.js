@@ -14,18 +14,24 @@
         $scope.testresultfunc()($scope.dataobject);
     };
 
-   // app.controller('ChildController', function ($scope, $timeout) {
     var timeout = null;
     var secondsToWaitBeforeSave = 1;
+    var saveUpdates = function () {
 
-        var saveUpdates = function () {
             //if ($scope['item_' + $scope.$index + '_form'].$valid) {
             //    console.log("Saving updates to item #" + ($scope.$index + 1) + "...", $scope.item);
             //} else {
             //    console.log("Tried to save updates to item #" + ($scope.$index + 1) + " but the form is invalid.");
-            //}
-            $scope.savefunc()($scope.dataobject);;
-        };
+        //}
+        //might need to store this on the object b/c it's shared
+        if (!$scope.dataobject.saveInProgress) { 
+            $scope.savefunc()($scope.dataobject)
+            .then(function () {
+                $scope.dataobject.saveInProgress = false;
+            });
+            $scope.dataobject.saveInProgress = true;
+        }
+     };
 
         var debounceUpdate = function (newVal, oldVal) {
             if (newVal != oldVal) {
@@ -35,9 +41,8 @@
                 timeout = $timeout(saveUpdates, secondsToWaitBeforeSave * 1000);
             }
         };
+
         $scope.$watch('ofield.value', debounceUpdate);
-        //$scope.$watch('item.description', debounceUpdate);
-    //});
 
 }
 
