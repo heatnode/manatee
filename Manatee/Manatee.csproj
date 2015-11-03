@@ -421,6 +421,7 @@
     <Content Include="views\detailElement.html" />
     <Content Include="views\editorModal.html" />
     <Content Include="views\landing.html" />
+    <Content Include="views\miscsnips.html" />
     <Content Include="views\objectlist.html" />
     <Content Include="views\sync.html" />
     <Content Include="views\testzone.html" />

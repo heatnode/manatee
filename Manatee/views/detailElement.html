@@ -1,10 +1,4 @@
-﻿<div class="form-group col-xs-2">
-    <b ng-if="ofield.label">{{ofield.label}}:</b> {{ ofield.value }}
-    <div ng-if="ofield.type =='bool'">bool</div>
-    <div ng-if="ofield.type =='date'">date</div>
-    <div ng-if="ofield.type =='singleselect'">singleselect</div>
-    <div ng-if="ofield.type =='string'">string</div>
-</div>      
+﻿    
 <div ng-if="ofield.type == 'testresult'" class="form-group col-xs-4">
     <!-- don't really need this.. <label class="control-label">Test Results</label>-->
     <div class="btn-group btn-group-xs">
@@ -15,6 +9,6 @@
     </div>
 </div>
 
-<div class="form-group col-xs-2" ng-if="ofield.type =='html'">
+<div  ng-if="ofield.type =='html'" class="form-group col-xs-2">
     <button ng-click="showCKEditorModal()" type="button" class="btn btn-default btn-xs"><span>{{ofield.label}} </span><span class="glyphicon glyphicon-pencil"></span></button>
 </div>
