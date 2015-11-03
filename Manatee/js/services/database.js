@@ -85,7 +85,7 @@ var databaseSvc = function ($rootScope) {
     }
 
     function createIssue(id, procId, title) {
-        var dbID = procId + '_issue_' + id;
+        var dbID = 'issue_' + procId + "_" + id;
         console.log(dbID);
         var issue = {
             _id: dbID,
@@ -192,7 +192,7 @@ var databaseSvc = function ($rootScope) {
     }
 
     service.getIssuesForID = function (procID) {
-        return db.allDocs({ startkey: procID +'_issue_', endkey: procID + '_issue_\uffff', include_docs: true, descending: false });
+        return db.allDocs({ startkey: 'issue_' + procID, endkey: 'issue_' + procID +'_\uffff', include_docs: true, descending: false });
     }
 
     function getSeqNumber() {

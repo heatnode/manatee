@@ -53,8 +53,13 @@
                                         <div class="form-group col-xs-2">
                                             <button ng-click="EMC.open(proc, 'Record of Work', 'title')" type="button" class="btn btn-default btn-xs"><span>Record of Work </span><span class="glyphicon glyphicon-pencil"></span></button>
                                         </div>
-                                        <!--myname="{{ proc.fields.title.value }}-->
-                                        <detail-element ng-repeat="field in proc.fields" objectfield="field"></detail-element>
+                                        <detail-element ng-repeat="(fldname, field) in proc.fields" 
+                                                        ofield="field" 
+                                                        fieldname="{{fldname}}" 
+                                                        dataobject="proc" 
+                                                        testresultfunc="olist.resolveTest" 
+                                                        editorfunc="EMC.open"></detail-element>
+
                                     </div>
                                 </div>
                             </div>
