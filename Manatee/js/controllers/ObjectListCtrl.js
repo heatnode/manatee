@@ -70,17 +70,40 @@
         self.objectFocus = 'workpaper';
         console.log(proc._id);
     }
-    //may be  too shallow (fields)
-    //$watchCollection('self.objects', function () { });
 
-    // new
+    self.addFile = function (file, _flow) {
+        //file.name
+        //file.msg
+        console.log('file');
+        console.log(file);
+        console.log('flow');
+        console.log(_flow);
+        ////var f = document.getElementById('file').files[0],
+        //reader = new FileReader();
+        //reader.onloadend = function (e) {
+        //    var data = e.target.result;
+        //    //send your binary data via $http or $resource or do anything else with it
+        //}
+        //reader.readAsArrayBuffer(f);
+
+        //var reader = new FileReader();
+
+        ///* Using a closure so that we can extract the 
+        //   File's attributes in the function. */
+        //reader.onload = (function (file) {
+        //    return function (e) {
+        //        pdb.putAttachment(response.id, file.name, response.rev, e.target.result, file.type);
+        //    };
+        //})(form.attachment.files.item(0));
+        //reader.readAsDataURL(form.attachment.files.item(0));
+
+    }
+
     self.selectedObj = null;
     self.setSelected = function (obj) {
         self.selectedObj = obj;
     };
-    //endnew
-
-    
+       
 }
 
 // The $inject property of every controller (and pretty much every other type of object in Angular) 

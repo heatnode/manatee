@@ -375,6 +375,7 @@
     <Content Include="js\directives\detailElementCtrl.js" />
     <Content Include="js\libraries\angular-animate.min.js" />
     <Content Include="js\libraries\angular-ckeditor.min.js" />
+    <Content Include="js\libraries\ng-flow-standalone.min.js" />
     <Content Include="js\libraries\pouchdb\pouchdb.find.min.js" />
     <Content Include="js\libraries\ui-bootstrap-tpls-0.14.3.min.js" />
     <Content Include="js\libraries\xeditable.min.js" />
