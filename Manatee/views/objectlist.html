@@ -19,7 +19,7 @@
                 </div>
                 <div class="btn-group btn-group-justified topgroup" role="group" 
                      flow-init="{singleFile:true}" 
-                     flow-file-added="olist.addFile($file,$flow)">
+                     flow-file-added="olist.addFile($file, $event, $flow)">
                     <div class="btn-group btn-group-sm" role="group">
                         <span class="btn btn-default" flow-btn><span class="glyphicon glyphicon-plus"></span> Workpaper<input type="file" style="visibility: hidden; position: absolute;"></span>
                     </div>
@@ -34,7 +34,7 @@
     <div class="row" ng-controller="EditorModalCtrl as EMC">
         <div class="col-xs-12">
             <div class="list-group" >
-                <div ng-click="olist.setSelected(dataobj)" ng-class="{selected: dataobj._id === olist.selectedObj._id}" 
+                <div ng-dblclick="olist.open(dataobj)" ng-click="olist.setSelected(dataobj)" ng-class="{selected: dataobj._id === olist.selectedObj._id}" 
                      class="list-group-item" ng-repeat="dataobj in olist.objects track by $index">
                     
                     <!--<form class="list-group-item-text">-->

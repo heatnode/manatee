@@ -134,10 +134,10 @@ var databaseSvc = function ($rootScope, notify) {
     }
 
     function createWorkpaper(id, parentId, title) {
-        var dbID = 'issue_' + procId + "_" + id;
-        var issue = {
+        var dbID = 'workpaper_' + parentId + "_" + id;
+        var wp = {
             _id: dbID,
-            type: "issue",
+            type: "workpaper",
             fields: {
                 title: {
                     label: 'Title',
@@ -150,16 +150,10 @@ var databaseSvc = function ($rootScope, notify) {
                     value: "",
                     type: "string",
                     validations: {}
-                },
-                release: {
-                    label: 'Release',
-                    value: false,
-                    type: "release",
-                    validations: {}
-                },
+                }
             }
         };
-        return issue;
+        return wp;
         //db.put({
         //    _id: 'meowth',
         //    _attachments: {
@@ -217,12 +211,48 @@ var databaseSvc = function ($rootScope, notify) {
             });
     }
 
+    service.addWorkpaper = function (parent, title, file) {
+        var workpaper; //using closure so we have the value in the final step
+        return getSeqNumber()
+            .then(function (id) {
+                workpaper = createWorkpaper(id, parent._id, title);
+                workpaper._attachments = {
+                    filename: {
+                        type: file.type,
+                        data: file
+                    }
+                };
+                return service.db.put(workpaper);
+            })
+            .then(function (response) {
+                //update proc
+                //todo: update counts to be more generic or add to other objects
+                parent.WorkpapersCount = parent.WorkpapersCount + 1;
+                return saveObject(parent);
+            })
+            .then(function (updatedParent) {
+                return updatedParent;
+            })
+            .catch(function (err) {
+                //todo: let error bubble or throw error if it didn't work
+                console.log(err);
+            });
+    }
+
+    service.getBlob = function (dataobj) {
+        return service.db.getAttachment(dataobj._id, 'filename');
+    }
+
     service.saveProc = function (proc) {
         return saveObject(proc);
     }
 
     service.saveIssue = function (issue) {
         return saveObject(issue);
+    }
+
+    service.saveWorkpaper= function (wp) {
+        return saveObject(wp);
     }
 
     function saveObject(obj) {
@@ -254,6 +284,12 @@ var databaseSvc = function ($rootScope, notify) {
     service.getIssuesForID = function (procID) {
         return db.allDocs({ startkey: 'issue_' + procID, endkey: 'issue_' + procID +'_\uffff', include_docs: true, descending: false });
     }
+
+    service.getWorkpapersForID = function (procID) {
+        return db.allDocs({ startkey: 'workpaper_' + procID, endkey: 'workpaper_' + procID + '_\uffff', include_docs: true, descending: false });
+    }
+
+    
 
     function getSeqNumber() {
         return db.info().then(function (result) {

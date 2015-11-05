@@ -32,6 +32,9 @@
         },
         issue: {
             saveToDB: db.saveIssue
+        },
+        workpaper: {
+            saveToDB: db.saveWorkpaper
         }
     }
 
@@ -41,16 +44,53 @@
 
     self.addProc = function (title) {
         $q.when(db.addProc(title)).then(showProcs());
-            //self.objects.unshift(result);
-            //showProcs();
-        //});
+
     }
 
     self.addIssue = function (title) {
         if (self.selectedObj) {
             $q.when(db.addIssue(self.selectedObj, title)).then(function (result) {
-                //self.objects.unshift(result);
+                //...
             });
+        }
+    }
+
+    self.open = function (dataobj) {
+        if (self.selectedObj.type == 'workpaper') {
+            $q.when(db.getBlob(dataobj)).then(function (blob) {
+                //debugger;
+                //var url = URL.createObjectURL(blob);
+                //var img = document.createElement('img');
+                //img.src = url;
+                //document.body.appendChild(img);
+
+                var fileNameToSaveAs = 'mytestname.docx';
+                var downloadLink = document.createElement("a");
+              //  downloadLink.download = fileNameToSaveAs;
+                downloadLink.innerHTML = "Download File";
+                if (window.webkitURL != null) {
+                //if(1==2){
+                    // Chrome allows the link to be clicked
+                    // without actually adding it to the DOM.
+                    downloadLink.href = window.webkitURL.createObjectURL(blob);
+                } else {
+                    // Firefox requires the link to be added to the DOM
+                    // before it can be clicked.
+                    ///msSaveOrOpenBlob this is the MS option as well
+                    //blob.type = 'application/msword';
+                    downloadLink.href = URL.createObjectURL(blob);
+                    downloadLink.onclick = destroyClickedElement;
+                    downloadLink.style.display = "none";
+                    document.body.appendChild(downloadLink);
+                }
+
+                downloadLink.click();
+
+                function destroyClickedElement(event) {
+                    document.body.removeChild(event.target);
+                }
+
+            })
         }
     }
 
@@ -68,35 +108,20 @@
 
     self.showWorkpapers = function (proc) {
         self.objectFocus = 'workpaper';
-        console.log(proc._id);
+        self.drillDownObj = proc;
+        $q.when(db.getWorkpapersForID(proc._id)).then(function (result) {
+            updateList(result)
+        });
     }
 
-    self.addFile = function (file, _flow) {
-        //file.name
-        //file.msg
-        console.log('file');
-        console.log(file);
-        console.log('flow');
-        console.log(_flow);
-        ////var f = document.getElementById('file').files[0],
-        //reader = new FileReader();
-        //reader.onloadend = function (e) {
-        //    var data = e.target.result;
-        //    //send your binary data via $http or $resource or do anything else with it
-        //}
-        //reader.readAsArrayBuffer(f);
-
-        //var reader = new FileReader();
-
-        ///* Using a closure so that we can extract the 
-        //   File's attributes in the function. */
-        //reader.onload = (function (file) {
-        //    return function (e) {
-        //        pdb.putAttachment(response.id, file.name, response.rev, e.target.result, file.type);
-        //    };
-        //})(form.attachment.files.item(0));
-        //reader.readAsDataURL(form.attachment.files.item(0));
-
+    self.addFile = function (fileHolder, e, _flow) {
+        var file = fileHolder.file;
+        var title = 'new wp';
+        if (self.selectedObj) {
+            $q.when(db.addWorkpaper(self.selectedObj, title, file)).then(function (result) {
+                //...
+            });
+        }
     }
 
     self.selectedObj = null;
