@@ -67,6 +67,16 @@ var databaseSvc = function ($rootScope, notify) {
                     options: [{ text: 'NONE', optvalue: 0 }, { text: 'pass', optvalue: 1 }, { text: 'fail', optvalue: 2 }],
                     validations: {}
                 },
+                workflow: {
+                    label: 'Workflow',
+                    value: 0,
+                    type: "workflow",
+                    options: [{ text: 'Not Started', optvalue: 0 },
+                        { text: 'In Progress', optvalue: 1 },
+                        { text: 'Completed', optvalue: 2 },
+                        { text: 'Reviewed', optvalue: 3 }],
+                    validations: {}
+                },
                 category1: {
                     label: 'Category1',
                     value: 0,
@@ -297,43 +307,72 @@ var databaseSvc = function ($rootScope, notify) {
             });
     }
 
-    //------------------ just testing here --------------
+    //function findProc
+    //// Available selectors are $gt, $gte, $lt, $lte, 
+    //// $eq, $ne, $exists, $type, and more
+    //db.createIndex({
+    //    index: { fields: ['debut'] }
+    //}).then(function () {
+    //    return db.find({
+    //        selector: { debut: { $gte: 1990 } }
+    //    });
+    //});
 
-    var data = {
-        hasIndexedDB: null,
-        hasWebSQL: null,
-        totalRecords: undefined
+    service.data = {
+        //hasIndexedDB: null,
+        //hasWebSQL: null,
+        totalRecords: undefined,
+        failingProcs: undefined
     };
 
     service.updateStats = function () { 
         db.info().then(function (result) {
             // handle result
-            data.totalRecords = result.doc_count;
+            //data.totalRecords = result.doc_count;
+            return result.doc_count;
+        }).then(function (totalrecs) {
+            service.data.totalRecords = totalrecs;
+            return service.getProcs();
+        }).then(function (procObj) {
+
+            service.data.failingProcs = statCounter(procObj.rows, 'result', 2);
+            service.data.passingProcs = statCounter(procObj.rows, 'result', 1);
+            service.data.untestedProcs = statCounter(procObj.rows, 'result', 0);
+
+            $rootScope.$broadcast('dbservicedata:updated');
+            //procs
         }).catch(function (err) {
             console.log(err);
         });
     };
 
+    function statCounter(ary, compareFieldName, compareValue) {
+        return ary.reduce(function (total, obj) {
+            return total + ((obj.doc.fields[compareFieldName].value === compareValue) ? 1 : 0);
+        }, 0);
+    }
+
     service.updateStats();
-    service.indexedDB = function () { return data.hasIndexedDB; };
-    service.webSQL = function () { return data.hasWebSQL; };
-    service.getNumberRecords = function () { return data.totalRecords; };
+    //service.getNumberRecords = function () { return data.totalRecords; };
 
-    new PouchDB('using-idb').info().then(function () {
-        //service.hasIndexedDBhtml = '&#10003';
-        data.hasIndexedDB = 'yes';
-        $rootScope.$broadcast('dbservicedata:updated');
-    }).catch(function (err) {
-        data.hasIndexedDB = "Nope, got an error: " + err;
-    });
+    //service.indexedDB = function () { return data.hasIndexedDB; };
+    //service.webSQL = function () { return data.hasWebSQL; };
 
-    new PouchDB('using-websql', { adapter: 'websql' }).info().then(function () {
-        //service.hasWebSQLhtml = '&#10003';
-        data.hasWebSQL = 'yes';
-        $rootScope.$broadcast('dbservicedata:updated');
-    }).catch(function (err) {
-        data.hasWebSQL = "Nope, got an error: " + err;
-    });
+    //new PouchDB('using-idb').info().then(function () {
+    //    //service.hasIndexedDBhtml = '&#10003';
+    //    data.hasIndexedDB = 'yes';
+    //    $rootScope.$broadcast('dbservicedata:updated');
+    //}).catch(function (err) {
+    //    data.hasIndexedDB = "Nope, got an error: " + err;
+    //});
+
+    //new PouchDB('using-websql', { adapter: 'websql' }).info().then(function () {
+    //    //service.hasWebSQLhtml = '&#10003';
+    //    data.hasWebSQL = 'yes';
+    //    $rootScope.$broadcast('dbservicedata:updated');
+    //}).catch(function (err) {
+    //    data.hasWebSQL = "Nope, got an error: " + err;
+    //});
     //------------------ end testing --------------
 
     return service;

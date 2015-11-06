@@ -9,6 +9,12 @@
     </div>
 </div>
 
+<div ng-if="ofield.type =='workflow'" class="form-group col-xs-2">
+    <a href="#" editable-select="ofield.value" e-ng-options="o.optvalue as o.text for o in ofield.options">
+        {{ showWFStatus() }}
+    </a>
+</div>
+
 <div  ng-if="ofield.type =='html'" class="form-group col-xs-2">
     <button ng-click="showCKEditorModal()" type="button" class="btn btn-default btn-xs"><span>{{ofield.label}} </span><span class="glyphicon glyphicon-pencil"></span></button>
 </div>

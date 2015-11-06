@@ -69,7 +69,6 @@
               //  downloadLink.download = fileNameToSaveAs;
                 downloadLink.innerHTML = "Download File";
                 if (window.webkitURL != null) {
-                //if(1==2){
                     // Chrome allows the link to be clicked
                     // without actually adding it to the DOM.
                     downloadLink.href = window.webkitURL.createObjectURL(blob);

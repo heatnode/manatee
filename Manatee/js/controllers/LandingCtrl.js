@@ -4,16 +4,21 @@
     //use "controller as" syntax
 
     self.info = {
-        hasidb: db.indexedDB,
-        hasws: db.webSQL,
-        getTotalRecs: db.getNumberRecords,
+        //hasidb: db.indexedDB,
+        //hasws: db.webSQL,
         title: 'i am a title'
     }
+
+    self.statObj = db.data;
+
+    //self.procdata = db.
 
     $scope.$on('dbservicedata:updated', function () {
         //apply is necessary to trigger a digest which will update the values
         $scope.$apply();
     });
+
+    db.updateStats();
 }
 
 // The $inject property of every controller (and pretty much every other type of object in Angular) 
