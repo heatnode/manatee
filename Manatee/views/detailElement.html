@@ -17,3 +17,9 @@
     <!--<label class="control-label">:</label>-->
     <input type="text" placeholder="{{ofield.label}}" class="form-control input-xs"  ng-model="ofield.value"/>
 </div>
+
+<div ng-if="ofield.type =='date'" class="form-group col-xs-4">
+    <a href="#" editable-bsdate="ofield.date" e-datepicker-popup="dd-MMMM-yyyy">
+        {{ (ofield.date | date:"dd/MM/yyyy") || '( due date )' }}
+    </a>
+</div>
