@@ -4,30 +4,64 @@ var databaseSvc = function ($rootScope, notify, $crypto) {
     var db;
 
     //testing, would need safe storage
-    var cryptKey = 'test';
-    service.setCryptKey = function (key) {
-        var cryptKey = key;
-    }
+    service.cryptKeeper = {
+        key: '',
+        useEncryption: false
+    };
+
+    //service.setCryptKey = function (_key) {
+    //    cryptKeeper.key = _key;
+    //}
+
+    //service.setUseEncryption = function (_useEncryption) {
+    //    cryptKeeper.useEncryption = _useEncryption;
+    //}
+
 
     service.createDB = function () {
         //auto compact cleans up multiple changes to same doc.field
         db = new PouchDB('manateeStore', { auto_compaction: true });
+        
 
         //todo: add encryption functions as dependency
         db.transform({
             incoming: function (doc) {
                 // do something to the document before storage
-                console.log('storage');
-                var encrypted = $crypto.encrypt('some plain text data', cryptKey);
-                console.log(encrypted);
+                //Object.keys(doc).forEach(function (field) {
+                //    if (field !== '_id' && field !== '_rev') {
+                //        doc[field] = encrypt(doc[field]);
+                //    }
+                //});
+                if (service.cryptKeeper.useEncryption && doc.fields.title) {
+                    doc.fields.title.value = $crypto.encrypt(doc.fields.title.value, service.cryptKeeper.key);
+                }
+                //Object.keys(doc).forEach(function (field) {
+                //    if (field !== '_id' && field !== '_rev') {
+                //        doc[field] = encrypt(doc[field]);
+                //    }
+                //});
+                //var encrypted = $crypto.encrypt('some plain text data', cryptKeeper.key);
+                //console.log(encrypted);
                 return doc;
             },
             outgoing: function (doc) {
                 // do something to the document after retrieval
-                console.log('retrival');
-                var encrypted = $crypto.encrypt('some plain text data', cryptKey);
-                var decrypted = $crypto.decrypt(encrypted, cryptKey);
-                console.log(decrypted);
+                //Object.keys(doc).forEach(function (field) {
+                //    if (field !== '_id' && field !== '_rev') {
+                //        doc[field] = decrypt(doc[field]);
+                //    }
+                //});
+                //Object.keys(doc).forEach(function (field) {
+                //    if (field !== '_id' && field !== '_rev') {
+                //        doc[field] = decrypt(doc[field]);
+                //    }
+                //});
+                //var encrypted = $crypto.encrypt('some plain text data', cryptKeeper.key);
+                //var decrypted = $crypto.decrypt(encrypted, cryptKey);
+                //console.log(decrypted);
+                if (service.cryptKeeper.useEncryption && doc.fields.title) {
+                    doc.fields.title.value = $crypto.decrypt(doc.fields.title.value, service.cryptKeeper.key);
+                }
                 return doc;
             }
         });

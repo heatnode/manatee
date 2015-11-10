@@ -9,6 +9,19 @@
         i = i + 1;
     }
 
+    //self.crypt = {
+    //    key: sync.db.cryptKeeper.key,
+    //    useEncryption: sync.db.cryptKeeper.useEncryption
+    //};
+    self.crypt = sync.db.cryptKeeper;
+
+    $scope.$watch(angular.bind(this, function () {
+        return this.crypt;
+    }), function (newVal) {
+        sync.db.cryptKeeper = newVal;
+    },true); //deep watch
+
+
     self.runSync = function () {
         sync.doSyncWithClear();
         self.log.push({ text: 'sync completed' });
