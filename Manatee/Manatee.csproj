@@ -70,6 +70,7 @@
     <Content Include="css\bootstrap.min.css" />
     <Content Include="css\freeicons\Preview.png" />
     <Content Include="css\freeicons\readme.txt" />
+    <Content Include="css\icons.css" />
     <Content Include="css\widgets.css" />
     <Content Include="css\xeditable.css" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />

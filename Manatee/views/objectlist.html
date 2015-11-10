@@ -37,10 +37,13 @@
                 <div ng-dblclick="olist.open(dataobj)" ng-click="olist.setSelected(dataobj)" ng-class="{selected: dataobj._id === olist.selectedObj._id}" 
                      class="list-group-item" ng-repeat="dataobj in olist.objects track by $index">
                         <div class="row">
+                            <div class="col-sm-1">
+                                <div class="iconHolder iconProcedure"></div>
+                            </div>
                             <!--<form editable-form  class="list-group-item-text form-horizontal" role="form">-->
-                                <div class="col-sm-10">
+                            <div class="col-sm-10">
                                     <div class="row">
-                                        <div class="col-sm-12">
+                                          <div class="col-sm-11">
                                             <h4 class="list-group-item-heading objectTitle"  buttons="no"
                                                 e-style="width: 600px; margin-bottom: 10px;" editable-text="dataobj.fields.title.value">{{ dataobj.fields.title.value }}</h4>
                                         </div>
