@@ -1,4 +1,4 @@
-﻿var Manatee = angular.module('Manatee', ['ngRoute', 'ui.bootstrap', 'ngAnimate', 'ckeditor', 'xeditable', 'flow']);
+﻿var Manatee = angular.module('Manatee', ['ngRoute', 'ui.bootstrap', 'ngAnimate', 'ckeditor', 'xeditable', 'flow', 'mdo-angular-cryptography']);
 
 Manatee.factory('databaseSvc', databaseSvc);
 Manatee.factory('syncSvc', syncSvc);

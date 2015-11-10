@@ -53,7 +53,7 @@
         //];
 
         $scope.showWFStatus = function () {
-            var selected = $filter('filter')($scope.ofield.options, { value: $scope.ofield.value });
+            var selected = $filter('filter')($scope.ofield.options, { optvalue: $scope.ofield.value });
             //return selected[0].text;
             return ($scope.ofield.options && selected.length) ? selected[0].text : 'Not set';
         };

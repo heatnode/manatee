@@ -12,7 +12,10 @@
     <!-- Bootstrap core CSS -->
 	<link rel="stylesheet" href="css/bootstrap.min.css">
 	<link rel="stylesheet" href="css/app.css">
-	
+    <!--experimental widget stuff-->
+      <link rel="stylesheet"  href="css/widgets.css" />
+    <link href="http://netdna.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+
     <!-- Angular-xeditable -->
     <link rel="stylesheet" href="css/xeditable.css">
 
@@ -63,19 +66,25 @@
     <script src="js/libraries/moment.min.js"></script>
     <script src="js/libraries/pouchdb/pouchdb.min.js"></script>
     <script src="js/libraries/pouchdb/pouchdb.find.min.js"></script>
+    <script src="js/libraries/pouchdb/pouchdb.transform-pouch.min.js"></script>
     <script src="js/libraries/angular-ckeditor.min.js"></script>
     <script src="js/libraries/xeditable.min.js"></script>
     <script src="js/libraries/ng-flow-standalone.min.js"></script>
+    <script src="js/libraries/crypto/aes.js"></script>
+    <script src="js/libraries/crypto/mdo-angular-cryptography.js"></script>
 
     <!-- ckeditor gets its own section :) -->
     <script src="js/ckeditor/ckeditor.js"></script>
+    <!--experimental chart stuff-->
+    <script src="http://www.chartjs.org/assets/Chart.min.js"></script>
+    <script src="js/libraries/Chart.HorizontalBar.js"></script>
 
     <!-- application files, this can be bundled later -->
     <!--Directives and their controllers -->
     <script src="js/directives/activelink.js"></script>
     <script src="js/directives/detailElement.js"></script>
     <script src="js/directives/detailElementCtrl.js"></script>
-
+    
     <!--services-->
     <script src="js/services/database.js"></script>
     <script src="js/services/sync.js"></script>
@@ -101,13 +110,17 @@
     https://github.com/angular-ui/bootstrap/issues/3676
 
     todo:
-    list of controls, drill down to list of procs
-    form controls by type (indexed/denoted by strings "multiselect", "single select", "html", "bool or boolradio etc")
-    incorporate progress bars and todos? possibly on landing -- cool circle graph thing
-    html editor (click on linked "field" to show fullscreen editor)
+    fix add proc
     encryption to database 
-    store word doc
-    add issues
+    incorporate progress bars and todos? possibly on landing -- cool circle graph thing
+    sync
+    procedure, issue, wp icons on grid
+    clean up grid a little
+    workflow icons in dropdown
+    X list of controls, drill down to list of procs
+    X form controls by type (indexed/denoted by strings "multiselect", "single select", "html", "bool or boolradio etc")
+    X html editor (click on linked "field" to show fullscreen editor)
+    X store word doc
+    X add issues
     if extra time - hyperlink via search
-    consider hydrating indexeddb objects directly to "models" for angular
 -->

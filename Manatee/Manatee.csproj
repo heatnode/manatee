@@ -70,6 +70,7 @@
     <Content Include="css\bootstrap.min.css" />
     <Content Include="css\freeicons\Preview.png" />
     <Content Include="css\freeicons\readme.txt" />
+    <Content Include="css\widgets.css" />
     <Content Include="css\xeditable.css" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="index.html" />
@@ -375,10 +376,15 @@
     <Content Include="js\directives\detailElementCtrl.js" />
     <Content Include="js\libraries\angular-animate.min.js" />
     <Content Include="js\libraries\angular-ckeditor.min.js" />
+    <Content Include="js\libraries\Chart.HorizontalBar.js" />
+    <Content Include="js\libraries\crypto\aes.js" />
+    <Content Include="js\libraries\crypto\mdo-angular-cryptography.js" />
     <Content Include="js\libraries\ng-flow-standalone.min.js" />
     <Content Include="js\libraries\pouchdb\pouchdb.find.min.js" />
+    <Content Include="js\libraries\pouchdb\pouchdb.transform-pouch.min.js" />
     <Content Include="js\libraries\ui-bootstrap-tpls-0.14.3.min.js" />
     <Content Include="js\libraries\xeditable.min.js" />
+    <Content Include="js\services\crypto.js" />
     <Content Include="js\services\database.js" />
     <Content Include="js\libraries\angular-route.min.js" />
     <Content Include="js\libraries\angular.min.js" />

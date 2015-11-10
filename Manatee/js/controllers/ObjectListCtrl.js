@@ -5,7 +5,9 @@
     self.showProcs = function () {
         self.objectFocus = 'procedure';
         self.drillDownObj = null;
+        console.log('showprocs');
         $q.when(db.getProcs()).then(function (result) {
+            console.log('update listshowprocs');
             updateList(result)
         });
     }
@@ -24,6 +26,7 @@
         allrows.forEach(function (item) {
             self.objects.push(item.doc);
         });
+        //$scope.$apply();
     }
 
     var objectOperations = {
@@ -43,7 +46,7 @@
     }
 
     self.addProc = function (title) {
-        $q.when(db.addProc(title)).then(showProcs());
+        $q.when(db.addProc(title)).then(self.showProcs());
 
     }
 

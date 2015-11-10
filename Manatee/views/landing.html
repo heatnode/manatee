@@ -1,24 +1,85 @@
-﻿<div class="row" ng-controller="LandingCtrl as landing">
-    <div class="col-xs-12">
-        <h1>Welcome to Manatee</h1>
-        <h3>offline mode</h3>
+﻿
+
+<div ng-controller="LandingCtrl as landing">
+    <div class="row">
+        <div class="col-xs-12">
+            <h1>Manatee landing page</h1>
+            <h3>offline mode</h3>
+        </div>
     </div>
-    <div class="col-xs-6">
-        Proc test status
-        <ul>
-            <li>TotalRecords:  {{ landing.statObj.totalRecords }}</li>
-            <li>Failing Procs? {{ landing.statObj.failingProcs }}</li>
-            <li>Passing Procs? {{ landing.statObj.passingProcs }}</li>
-            <li>Untested Procs? {{ landing.statObj.untestedProcs }}</li>
-        </ul>
-    </div>
-    <div class="col-xs-6">
-        Workflow
-        <ul>
-            <li>Not Started {{ landing.statObj.failingProcs }}</li>
-            <li>In Progress:  {{ landing.statObj.totalRecords }}</li>
-            <li>Completed {{ landing.statObj.passingProcs }}</li>
-            <li>Reviewed {{ landing.statObj.untestedProcs }}</li>
-        </ul>
+    <!--<div class="row">
+        <div class="col-xs-6">
+            Proc test status
+            <ul>
+                <li>TotalRecords:  {{ landing.statObj.totalRecords }}</li>
+                <li>Failing Procs? {{ landing.statObj.failingProcs }}</li>
+                <li>Passing Procs? {{ landing.statObj.passingProcs }}</li>
+                <li>Untested Procs? {{ landing.statObj.untestedProcs }}</li>
+            </ul>
+        </div>
+        <div class="col-xs-6">
+            Workflow
+            <ul>
+                <li>Not Started {{ landing.statObj.procWF.NotStarted }}</li>
+                <li>In Progress: {{ landing.statObj.procWF.InProgress }}</li>
+                <li>Completed {{ landing.statObj.procWF.Completed }}</li>
+                <li>Reviewed {{ landing.statObj.procWF.Reviewed }}</li>
+            </ul>
+        </div>
+    </div>-->
+
+    <div class="row">
+        <div class="col-xs-6">
+            <div id="pie-chart-widget" class="panel">
+                <div class="panel-heading text-center">
+                    <h5 class="text-uppercase"><strong>Procedure Results</strong></h5>
+                </div>
+                <div class="panel-body">
+                    <canvas id="myPieChart"></canvas>
+                </div>
+                <div class="panel-footer">
+                    <div class="list-block">
+                        <ul class="text-center legend">
+                            <li class="video" style="margin-right: 1px;">
+                                Passing
+                                <h2>{{ landing.procStats.Passed.Pct() | number:0 }}%</h2>
+                            </li>
+                            <li class="photo">
+                                Failing
+                                <h2>{{ landing.procStats.Failed.Pct() | number:0 }}%</h2>
+                            </li>
+                            <li class="audio" style="margin-left: 1px;">
+                                Not Tested
+                                <h2>{{ landing.procStats.NotTested.Pct() | number:0 }}%</h2>
+                            </li>
+                        </ul>
+                    </div>
+                    <!--<div class="btn-group btn-group-justified text-uppercase text-center">
+                        <a class="btn btn-default" role="button"><i class="fa fa-cloud-upload fa-2x"></i><br><small>Upload Files</small></a>
+                        <a class="btn btn-default" role="button"><i class="fa fa-share-alt fa-2x"></i><br><small>Share Link</small></a>
+                        <a class="btn btn-default" role="button"><i class="fa fa-history fa-2x"></i><br><small>Back Up</small></a>
+                    </div>-->
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-6">
+            <div id="bar-chart-widget" class="panel" >
+                <div class="panel-heading text-center">
+                    <h5 class="text-uppercase"><strong>Procedure Workflow</strong></h5>
+                </div>
+                <div class="panel-body">
+                    <canvas id="myBarChart"></canvas>
+                </div>
+                <div class="panel-footer">
+                    <!--
+                        <div class="btn-group btn-group-justified text-uppercase text-center">
+                    <a class="btn btn-default" role="button"><i class="fa fa-cloud-upload fa-2x"></i><br><small>Upload Files</small></a>
+                    <a class="btn btn-default" role="button"><i class="fa fa-share-alt fa-2x"></i><br><small>Share Link</small></a>
+                    <a class="btn btn-default" role="button"><i class="fa fa-history fa-2x"></i><br><small>Back Up</small></a>
+                    </div>
+                    -->
+                </div>
+            </div>
+        </div>
     </div>
 </div>

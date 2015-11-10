@@ -1,14 +1,42 @@
-var databaseSvc = function ($rootScope, notify) {
+var databaseSvc = function ($rootScope, notify, $crypto) {
 
     var service = {};
     var db;
 
+    //testing, would need safe storage
+    var cryptKey = 'test';
+    service.setCryptKey = function (key) {
+        var cryptKey = key;
+    }
+
     service.createDB = function () {
         //auto compact cleans up multiple changes to same doc.field
-        db = new PouchDB('manateeStore', { auto_compaction: true }); 
+        db = new PouchDB('manateeStore', { auto_compaction: true });
+
+        //todo: add encryption functions as dependency
+        db.transform({
+            incoming: function (doc) {
+                // do something to the document before storage
+                console.log('storage');
+                var encrypted = $crypto.encrypt('some plain text data', cryptKey);
+                console.log(encrypted);
+                return doc;
+            },
+            outgoing: function (doc) {
+                // do something to the document after retrieval
+                console.log('retrival');
+                var encrypted = $crypto.encrypt('some plain text data', cryptKey);
+                var decrypted = $crypto.decrypt(encrypted, cryptKey);
+                console.log(decrypted);
+                return doc;
+            }
+        });
+
         //todo: long term don't expose this obviously
         service.db = db;
     }
+
+
 
     service.createDB();
 
@@ -60,13 +88,6 @@ var databaseSvc = function ($rootScope, notify) {
                     type: "date",
                     validations: {}
                 },
-                result: {
-                    label: '',
-                    value: 0,
-                    type: "testresult",
-                    options: [{ text: 'NONE', optvalue: 0 }, { text: 'pass', optvalue: 1 }, { text: 'fail', optvalue: 2 }],
-                    validations: {}
-                },
                 workflow: {
                     label: 'Workflow',
                     value: 0,
@@ -77,13 +98,21 @@ var databaseSvc = function ($rootScope, notify) {
                         { text: 'Reviewed', optvalue: 3 }],
                     validations: {}
                 },
-                category1: {
-                    label: 'Category1',
+                result: {
+                    label: '',
                     value: 0,
-                    type: "singleselect",
-                    options: [{ text: 'NONE', optvalue: 1 }, { text: 'cat1', optvalue: 1 }, { text: 'cat2', optvalue: 2 }],
+                    type: "testresult",
+                    options: [{ text: 'NONE', optvalue: 0 }, { text: 'pass', optvalue: 1 }, { text: 'fail', optvalue: 2 }],
                     validations: {}
                 },
+
+                //category1: {
+                //    label: 'Category1',
+                //    value: 0,
+                //    type: "singleselect",
+                //    options: [{ text: 'NONE', optvalue: 1 }, { text: 'cat1', optvalue: 1 }, { text: 'cat2', optvalue: 2 }],
+                //    validations: {}
+                //},
                 description: {
                     label: 'Description',
                     value: "",
@@ -287,6 +316,7 @@ var databaseSvc = function ($rootScope, notify) {
     }
 
     service.getProcs = function () {
+        //console.log('getdocs');
         //todo: reconsider sorting
         return db.allDocs({ startkey: 'procedure_\uffff', endkey: 'procedure_', include_docs: true, descending: true });
     }
@@ -335,9 +365,16 @@ var databaseSvc = function ($rootScope, notify) {
             return service.getProcs();
         }).then(function (procObj) {
 
+            //probably can move these to a map/reduce function set
             service.data.failingProcs = statCounter(procObj.rows, 'result', 2);
             service.data.passingProcs = statCounter(procObj.rows, 'result', 1);
             service.data.untestedProcs = statCounter(procObj.rows, 'result', 0);
+            service.data.procWF = { 
+                NotStarted: statCounter(procObj.rows, 'workflow', 0),
+                InProgress: statCounter(procObj.rows, 'workflow', 1),
+                Completed: statCounter(procObj.rows, 'workflow', 2),
+                Reviewed: statCounter(procObj.rows, 'workflow', 3),
+            }
 
             $rootScope.$broadcast('dbservicedata:updated');
             //procs
@@ -378,4 +415,4 @@ var databaseSvc = function ($rootScope, notify) {
     return service;
 };
 
-databaseSvc.$inject = ['$rootScope', 'notify'];
+databaseSvc.$inject = ['$rootScope', 'notify','$crypto'];

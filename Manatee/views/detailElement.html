@@ -1,31 +1,38 @@
 ﻿    
-<div ng-if="ofield.type == 'testresult'" class="form-group col-xs-4">
+<div ng-if="ofield.type == 'testresult'" class="col-sm-3">
     <!-- don't really need this.. <label class="control-label">Test Results</label>-->
     <div class="btn-group btn-group-xs">
         <!--TODO: text/value would be lookup or this whole thing handled by directive-->
-        <label class="btn btn-default" ng-change="saveTestResults()" ng-model="ofield.value" uib-btn-radio="0"><span class="text-warning">Not Tested</span></label>
+        <label class="btn btn-default" ng-change="saveTestResults()" ng-model="ofield.value" uib-btn-radio="0"><span class="text-warning">None</span></label>
         <label class="btn btn-default" ng-change="saveTestResults()" ng-model="ofield.value" uib-btn-radio="1"><span class="text-success">Pass</span></label>
         <label class="btn btn-default" ng-change="saveTestResults()" ng-model="ofield.value" uib-btn-radio="2"><span class="text-danger">Fail</span></label>
     </div>
 </div>
 
-<div ng-if="ofield.type =='workflow'" class="form-group col-xs-2">
-    <a href="#" editable-select="ofield.value" e-ng-options="o.optvalue as o.text for o in ofield.options">
+<div ng-if="ofield.type =='string'" class="form-group col-sm-3">
+    <a href="#" editable-text="ofield.value" class="" buttons="no">
+        {{ ofield.value || '[Code]' }}
+    </a>
+</div>
+
+<div ng-if="ofield.type =='workflow'" class="form-group col-sm-2">
+    <a href="#" editable-select="ofield.value" e-ng-options="o.optvalue as o.text for o in ofield.options" buttons="no">
         {{ showWFStatus() }}
     </a>
 </div>
 
-<div  ng-if="ofield.type =='html'" class="form-group col-xs-2">
-    <button ng-click="showCKEditorModal()" type="button" class="btn btn-default btn-xs"><span>{{ofield.label}} </span><span class="glyphicon glyphicon-pencil"></span></button>
+<div ng-if="ofield.type =='singleselect'" class="form-group col-sm-2">
 </div>
 
-<div ng-if="ofield.type =='string'" class="form-group col-xs-2">
-    <!--<label class="control-label">:</label>-->
-    <input type="text" placeholder="{{ofield.label}}" class="form-control input-xs"  ng-model="ofield.value"/>
+<div ng-if="ofield.type =='html'" class="form-group col-sm-2">
+    <div class="btn-group btn-group-xs">
+        <button ng-click="showCKEditorModal()" type="button" class="btn btn-default btn-xs"><span>{{ofield.label}} </span><span class="glyphicon glyphicon-pencil"></span></button>
+    </div>
 </div>
 
-<div ng-if="ofield.type =='date'" class="form-group col-xs-4">
-    <a href="#" editable-bsdate="ofield.date" e-datepicker-popup="dd-MMMM-yyyy">
-        {{ (ofield.date | date:"dd/MM/yyyy") || '( due date )' }}
+
+<div ng-if="ofield.type =='date'" class="form-group col-sm-2">
+    <a href="#" editable-bsdate="ofield.value" e-datepicker-popup="dd-MMMM-yyyy" buttons="no">
+        {{ (ofield.value | date:"dd/MM/yyyy")   || '( due date )' }}
     </a>
 </div>
