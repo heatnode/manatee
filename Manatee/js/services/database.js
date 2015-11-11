@@ -255,6 +255,7 @@ var databaseSvc = function ($rootScope, notify, $crypto) {
                 return service.db.put(proc);
             })
             .then(function (response) {
+                //console.log('add proc');
                 return proc;
             })
             .catch(function (err) {
@@ -367,7 +368,12 @@ var databaseSvc = function ($rootScope, notify, $crypto) {
 
     function getSeqNumber() {
         return db.info().then(function (result) {
-                return result.update_seq;
+                var str = "" + result.update_seq;
+                var pad = "000000";
+                var paddedId = pad.substring(0, pad.length - str.length) + str;
+                console.log(paddedId);
+                return paddedId;
+                //return result.update_seq;
             });
     }
 

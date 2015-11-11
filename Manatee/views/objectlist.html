@@ -43,7 +43,7 @@
                                           <div class="col-sm-12">
                                             <h4 class="list-group-item-heading objectTitle"  buttons="no"
                                                 e-style="width: 600px; margin-bottom: 10px;" editable-text="dataobj.fields.title.value">
-                                              <span class="headerIcon iconHolder iconProcedure"></span>
+                                              <span class="headerIcon iconHolder" ng-class="olist.getIconClass(olist.objectFocus)"></span>
                                               {{ dataobj.fields.title.value }}</h4>
                                         </div>
                                     </div>
@@ -60,8 +60,18 @@
                             <!--</form>-->
                             <div class="col-sm-2">
                                 <ul class="nav nav-pills nav-stacked">
-                                    <li ng-if="dataobj.IssuesCount>0" role="presentation" class=""><a ng-click="olist.showIssues(dataobj)"><span class="ddIcon iconHolder iconProcedure"></span>Issues:<span class="pull-right badge alert-danger" >{{dataobj.IssuesCount}}</span></a></li>
-                                    <li ng-if="dataobj.WorkpapersCount>0" role="presentation" class="" ><a ng-click="olist.showWorkpapers(dataobj)">Workpapers:<span class="pull-right badge alert-primary">{{dataobj.WorkpapersCount}}</span></a></li>
+                                    <li ng-if="dataobj.IssuesCount>0" role="presentation" class="">
+                                    <a ng-click="olist.showIssues(dataobj)">
+                                        <span class="ddIcon iconHolder" ng-class="olist.getIconClass('issue')"></span>
+                                        Issues:<span class="pull-right badge alert-danger" >{{dataobj.IssuesCount}}</span>
+                                        </a>
+                                    </li>
+                                    <li ng-if="dataobj.WorkpapersCount>0" role="presentation" class="" >
+                                    <a ng-click="olist.showWorkpapers(dataobj)">
+                                        <span class="ddIcon iconHolder" ng-class="olist.getIconClass('workpaper')"></span>
+                                        Workpapers:<span class="pull-right badge alert-primary">{{dataobj.WorkpapersCount}}</span>
+                                        </a>
+                                    </li>
                                 </ul>
                             </div>
                         </div>

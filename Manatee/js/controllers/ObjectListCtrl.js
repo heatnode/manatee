@@ -2,22 +2,22 @@
 
     var self = this; //for controller as syntax later
     self.drillDownObj = null;
+    self.objects = []
+
     self.showProcs = function () {
         self.objectFocus = 'procedure';
         self.drillDownObj = null;
-        console.log('showprocs');
+        //console.log('showprocs');
         $q.when(db.getProcs()).then(function (result) {
-            console.log('update listshowprocs');
-            updateList(result)
+            //console.log('update list');
+            updateList(result);
         });
     }
 
     init();
 
     function init() {
-        self.objects = [];
         self.showProcs();
-        
     }
 
     function updateList(result) {
@@ -26,7 +26,6 @@
         allrows.forEach(function (item) {
             self.objects.push(item.doc);
         });
-        //$scope.$apply();
     }
 
     var objectOperations = {
@@ -46,7 +45,7 @@
     }
 
     self.addProc = function (title) {
-        $q.when(db.addProc(title)).then(self.showProcs());
+        $q.when(db.addProc(title)).then(function (result) { self.showProcs(); });
 
     }
 
@@ -130,6 +129,14 @@
     self.setSelected = function (obj) {
         self.selectedObj = obj;
     };
+
+    self.getIconClass = function (focus) {
+        return {
+            iconProcedure: focus == 'procedure',
+            iconIssue: focus == 'issue',
+            iconWorkpaper: focus == 'workpaper'
+        }
+    }
        
 }
 

@@ -9,7 +9,7 @@
     </div>
 </div>
 
-<div ng-if="ofield.type =='string'" class="form-group col-sm-3">
+<div ng-if="ofield.type =='string'" class="form-group col-sm-2">
     <a href="#" editable-text="ofield.value" class="" buttons="no">
         {{ ofield.value || '[Code]' }}
     </a>
@@ -31,7 +31,7 @@
 </div>
 
 
-<div ng-if="ofield.type =='date'" class="form-group col-sm-2">
+<div ng-if="ofield.type =='date'" class="form-group col-sm-1">
     <a href="#" editable-bsdate="ofield.value" e-datepicker-popup="dd-MMMM-yyyy" buttons="no">
         {{ (ofield.value | date:"dd/MM/yyyy")   || '( due date )' }}
     </a>
