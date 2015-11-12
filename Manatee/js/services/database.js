@@ -5,7 +5,7 @@ var databaseSvc = function ($rootScope, notify, $crypto) {
 
     //testing, would need safe storage
     service.cryptKeeper = {
-        key: '',
+        key: 'test',
         useEncryption: false
     };
 
@@ -21,7 +21,6 @@ var databaseSvc = function ($rootScope, notify, $crypto) {
     service.createDB = function () {
         //auto compact cleans up multiple changes to same doc.field
         db = new PouchDB('manateeStore', { auto_compaction: true });
-        
 
         //todo: add encryption functions as dependency
         db.transform({
@@ -35,13 +34,21 @@ var databaseSvc = function ($rootScope, notify, $crypto) {
                 if (service.cryptKeeper.useEncryption && doc.fields.title) {
                     doc.fields.title.value = $crypto.encrypt(doc.fields.title.value, service.cryptKeeper.key);
                 }
+
+                //if (service.cryptKeeper.useEncryption && doc._attachments) {
+                //    console.log('has attachment');
+                //    //debugger;
+                //    //todo: work through this
+                //    //http://craig-bruce.com/CryptoJS-reprise/
+                //    doc._attachments.filename.data = $crypto.encryptBinary(doc._attachments.filename.data, service.cryptKeeper.key);
+                //}
+
                 //Object.keys(doc).forEach(function (field) {
                 //    if (field !== '_id' && field !== '_rev') {
                 //        doc[field] = encrypt(doc[field]);
                 //    }
                 //});
-                //var encrypted = $crypto.encrypt('some plain text data', cryptKeeper.key);
-                //console.log(encrypted);
+
                 return doc;
             },
             outgoing: function (doc) {
@@ -62,6 +69,10 @@ var databaseSvc = function ($rootScope, notify, $crypto) {
                 if (service.cryptKeeper.useEncryption && doc.fields.title) {
                     doc.fields.title.value = $crypto.decrypt(doc.fields.title.value, service.cryptKeeper.key);
                 }
+                //if (service.cryptKeeper.useEncryption && doc._attachments) {
+                //    console.log('decrypt attachment attachment');
+                //    doc._attachments.filename.data = $crypto.decryptBinary(doc._attachments.filename.data, service.cryptKeeper.key);
+                //}
                 return doc;
             }
         });
@@ -70,9 +81,72 @@ var databaseSvc = function ($rootScope, notify, $crypto) {
         service.db = db;
     }
 
-
-
     service.createDB();
+
+    //todo: figure out where/when to do this. This will create/update the user every tiem the service starts
+    //probably should add to "on create" of database
+    createTestUser();
+
+    function createTestUser() {
+        //var passhash = 'test'
+        var passhash = $crypto.getHash('test');
+        console.log('passhash: ' + passhash);
+        var id = padId(1);
+
+        var paddedId = padId(id);
+        var dbID = 'user_' + id;
+        var user = {
+            _id: dbID,
+            type: "user",
+            username:'joe',
+            passhash: passhash,
+            id:id
+        };
+
+        return Promise.resolve().then(function () {
+            return service.db.put(user);
+        })
+        .then(function (result) {
+            return user;
+        }).catch(function (err) {
+            //todo: this will be the error about dupes after the first time
+           // console.log(err);
+        });
+        //todo: maybe check first, and create if missing..
+        //db.get('mydoc').then(function (doc) {
+        //    // handle doc
+        //}).catch(function (err) {
+        //    console.log(err);
+        //});
+    }
+
+    service.addWorkpaper = function (parent, title, file) {
+        var workpaper; //using closure so we have the value in the final step
+        return getSeqNumber()
+            .then(function (id) {
+                workpaper = createWorkpaper(id, parent._id, title);
+                workpaper._attachments = {
+                    filename: {
+                        type: file.type,
+                        data: file
+                    }
+                };
+                return service.db.put(workpaper);
+            })
+            .then(function (response) {
+                //update proc
+                //todo: update counts to be more generic or add to other objects
+                parent.WorkpapersCount = parent.WorkpapersCount + 1;
+                return saveObject(parent);
+            })
+            .then(function (updatedParent) {
+                return updatedParent;
+            })
+            .catch(function (err) {
+                //todo: let error bubble or throw error if it didn't work
+                console.log(err);
+            });
+    }
 
     service.findObject = function (id) {
         return db.find({
@@ -118,7 +192,7 @@ var databaseSvc = function ($rootScope, notify, $crypto) {
                 },
                 datedue: {
                     label: 'Date Due',
-                    value: "",
+                    value: null,
                     type: "date",
                     validations: {}
                 },
@@ -227,24 +301,6 @@ var databaseSvc = function ($rootScope, notify, $crypto) {
             }
         };
         return wp;
-        //db.put({
-        //    _id: 'meowth',
-        //    _attachments: {
-        //        'meowth.png': {
-        //            content_type: 'image/png',
-        //            data: 'iVBORw0KGgoAAAANSUhEUgAAACgAAAAkCAIAAAB0Xu9BAAAABGdBTUEAALGPC/xhBQAAAuNJREFUWEetmD1WHDEQhDdxRMYlnBFyBIccgdQhKVcgJeQMpE5JSTd2uqnvIGpVUqmm9TPrffD0eLMzUn+qVnXPwiFd/PP6eLh47v7EaazbmxsOxjhTT88z9hV7GoNF1cUCvN7TTPv/gf/+uQPm862MWTL6fff4HfDx4S79/oVAlAUwqOmYR0rnazuFnhfOy/ErMKkcBFOr1vOjUi2MFn4nuMil6OPh5eGANLhW3y6u3aH7ijEDCxgCvzFmimvc95TekZLyMSeJC68Bkw0kqUy1K87FlpGZqsGFCyqEtQNDdFUtFctTiuhnPKNysid/WFEFLE2O102XJdEE+8IgeuGsjeJyGHm/xHvQ3JtKVsGGp85g9rK6xMHtvHO9+WACYjk5vkVM6XQ6OZubCJvTfPicYPeHO2AKFl5NuF5UK1VDUbeLxh2BcRGKTQE3irHm3+vPj6cfCod50Eqv5QxtwBQUGhZhbrGVuRia1B4MNp6edwBxld2sl1splfHCwfsvCZfrCQyWmX10djjOlWJSSy3VQlS6LmfrgNvaieRWx1LZ6s9co+P0DLsy3OdLU3lWRclQsVcHJBcUQ0k9/WVVrmpRzYQzpgAdQcAXxZzUnFX3proannrYH+Vq6KkLi+UkarH09mC8YPr2RMWOlEqFkQClsykGEv7CqCUbXcG8+SaGvJ4a8d4y6epND+pEhxoN0vWUu5ntXlFb5/JT7JfJJqoTdy9u9qc7ax3xJRHqJLADWEl23cFWl4K9fvoaCJ2BHpmJ3s3z+O0U/DmzdMjB9alWZtg4e3yxzPa7lUR7nkvxLHO9+tvJX3mtSDpwX8GajB283I8R8a7D2MhUZr1iNWdny256yYLd52DwRYBtRMvE7rsmtxIUE+zLKQCDO4jlxB6CZ8M17GhuY+XTE8vNhQiIiSE82ZsGwk1pht4ZSpT0YVpon6EvevOXXH8JxVR78QzNuamupW/7UB7wO/+7sG5V4ekXb4cL5Lyv+4IAAAAASUVORK5CYII='
-        //        }
-        //    }
-        //}).then(function () {
-        //    return db.getAttachment('meowth', 'meowth.png');
-        //}).then(function (blob) {
-        //    var url = URL.createObjectURL(blob);
-        //    var img = document.createElement('img');
-        //    img.src = url;
-        //    document.body.appendChild(img);
-        //}).catch(function (err) {
-        //    console.log(err);
-        //});
     }
 
     service.addProc = function (title) {
@@ -314,6 +370,7 @@ var databaseSvc = function ($rootScope, notify, $crypto) {
     }
 
     service.getBlob = function (dataobj) {
+        //todo: promise this through a decryption step
         return service.db.getAttachment(dataobj._id, 'filename');
     }
 
@@ -351,7 +408,6 @@ var databaseSvc = function ($rootScope, notify, $crypto) {
     }
 
     service.getProcs = function () {
-        //console.log('getdocs');
         //todo: reconsider sorting
         return db.allDocs({ startkey: 'procedure_\uffff', endkey: 'procedure_', include_docs: true, descending: true });
     }
@@ -364,15 +420,17 @@ var databaseSvc = function ($rootScope, notify, $crypto) {
         return db.allDocs({ startkey: 'workpaper_' + procID, endkey: 'workpaper_' + procID + '_\uffff', include_docs: true, descending: false });
     }
 
-    
+    function padId(id){
+        var str = "" + id;
+        var pad = "000000";
+        var paddedId = pad.substring(0, pad.length - str.length) + str;
+        return paddedId;
+    }
 
     function getSeqNumber() {
         return db.info().then(function (result) {
-                var str = "" + result.update_seq;
-                var pad = "000000";
-                var paddedId = pad.substring(0, pad.length - str.length) + str;
-                console.log(paddedId);
-                return paddedId;
+                return padId(result.update_seq);
+                //return paddedId;
                 //return result.update_seq;
             });
     }
@@ -430,28 +488,6 @@ var databaseSvc = function ($rootScope, notify, $crypto) {
     }
 
     service.updateStats();
-    //service.getNumberRecords = function () { return data.totalRecords; };
-
-    //service.indexedDB = function () { return data.hasIndexedDB; };
-    //service.webSQL = function () { return data.hasWebSQL; };
-
-    //new PouchDB('using-idb').info().then(function () {
-    //    //service.hasIndexedDBhtml = '&#10003';
-    //    data.hasIndexedDB = 'yes';
-    //    $rootScope.$broadcast('dbservicedata:updated');
-    //}).catch(function (err) {
-    //    data.hasIndexedDB = "Nope, got an error: " + err;
-    //});
-
-    //new PouchDB('using-websql', { adapter: 'websql' }).info().then(function () {
-    //    //service.hasWebSQLhtml = '&#10003';
-    //    data.hasWebSQL = 'yes';
-    //    $rootScope.$broadcast('dbservicedata:updated');
-    //}).catch(function (err) {
-    //    data.hasWebSQL = "Nope, got an error: " + err;
-    //});
-    //------------------ end testing --------------
-
     return service;
 };
 

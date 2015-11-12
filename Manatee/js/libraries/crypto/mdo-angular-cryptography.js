@@ -27,8 +27,38 @@ angular.module('mdo-angular-cryptography', [])
                         key = cryptoKey;
                     }
 
-                    return CryptoJS.AES.decrypt(message, key).toString(CryptoJS.enc.Utf8)
+                    return CryptoJS.AES.decrypt(message, key).toString(CryptoJS.enc.Utf8);
+                },
+
+                encryptBinary: function (message, key) {
+
+                    if (key === undefined) {
+                        key = cryptoKey;
+                    }
+
+                    return CryptoJS.AES.encrypt(
+                            CryptoJS.enc.Latin1.parse(message),
+                            CryptoJS.enc.Latin1.parse(key)
+                        );
+
+                },
+
+                
+                decryptBinary: function (message, key) {
+
+                    if (key === undefined) {
+                        key = cryptoKey;
+                    }
+
+                    return CryptoJS.AES.decrypt(message, key).toString(CryptoJS.enc.Latin1);
+
+                },
+
+                getHash: function (message) {
+                    var hash = CryptoJS.SHA256(message);
+                    return hash.toString(CryptoJS.enc.Base64);
                 }
+
             }
         }];
     });

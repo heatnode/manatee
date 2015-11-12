@@ -9,9 +9,12 @@
         title: 'i am a title'
     }
 
-    var pctFn = function () { return 100*((self.procStats.getTotal()) ? this.Actual / self.procStats.getTotal() : 0); }
+    var pctFn = function () {
+        return 100 * ((self.procStats.getTotal()) ? this.Actual / self.procStats.getTotal() : 0);
+    }
 
     self.statObj = db.data;
+
     self.procStats = {
         NotTested: {
             Pct:  pctFn,
@@ -25,7 +28,9 @@
             Pct: pctFn,
             Actual: 0
         },
-        getTotal: function () { return this.Failed.Actual + this.Passed.Actual + this.NotTested.Actual; }
+        getTotal: function () {
+            return this.Failed.Actual + this.Passed.Actual + this.NotTested.Actual;
+        }
     };
 
     //self.procdata = db.
@@ -43,6 +48,7 @@
     db.updateStats();
 
     //testing probably would become a chart directive with its own controller
+    //todo: add placehodlers for "no data" conditions
     function updatePieChart() {
         //Docs at http://www.chartjs.org 
         var pie_data = [
@@ -86,14 +92,14 @@
 
         var data = {
             labels: [
-                  'Reviewed', 'Completed', 'In Progress', 'Not Started'
+                  'Not Started', 'In Progress', 'Completed', 'Reviewed'
             ],
             datasets: [
                 {
                     label: 'Workflow State',
                     fillColor: 'rgba(4,151,179,0.5)',
                     highlightFill: 'rgba(0,163,124,0.5)',
-                    data: [stateObj.Reviewed, stateObj.Completed, stateObj.InProgress, stateObj.NotStarted]
+                    data: [stateObj.NotStarted, stateObj.InProgress, stateObj.Completed, stateObj.Reviewed ]
                 }
             ]
         };

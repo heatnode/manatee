@@ -31,8 +31,8 @@
 </div>
 
 
-<div ng-if="ofield.type =='date'" class="form-group col-sm-1">
-    <a href="#" editable-bsdate="ofield.value" e-datepicker-popup="dd-MMMM-yyyy" buttons="no">
-        {{ (ofield.value | date:"dd/MM/yyyy")   || '( due date )' }}
+<div ng-if="ofield.type =='date'" class="form-group col-sm-2">
+    <a href="#" editable-date="ofield.value"  buttons="no">
+        {{ ofield.value  || '( due date )' }}
     </a>
 </div>

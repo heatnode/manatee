@@ -15,8 +15,7 @@
     <link rel="stylesheet" href="css/icons.css">
     <!--experimental widget stuff-->
     <link rel="stylesheet"  href="css/widgets.css" />
-    <link href="http://netdna.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
-
+    <link href="css/font-awesome.min.css" rel="stylesheet" />
     <!-- Angular-xeditable -->
     <link rel="stylesheet" href="css/xeditable.css">
 
@@ -73,11 +72,15 @@
     <script src="js/libraries/ng-flow-standalone.min.js"></script>
     <script src="js/libraries/crypto/aes.js"></script>
     <script src="js/libraries/crypto/mdo-angular-cryptography.js"></script>
+    <script src="js/libraries/crypto/sha256.js"></script>
+      <!--not sure this one is needed, review - I thought it might be required for binary encryption to work directly -->
+    <script src="js/libraries/crypto/lib-typedarrays-min.js"></script>
+
 
     <!-- ckeditor gets its own section :) -->
     <script src="js/ckeditor/ckeditor.js"></script>
     <!--experimental chart stuff-->
-    <script src="http://www.chartjs.org/assets/Chart.min.js"></script>
+    <script src="js/libraries/Chart.min.js"></script>
     <script src="js/libraries/Chart.HorizontalBar.js"></script>
 
     <!-- application files, this can be bundled later -->
@@ -111,19 +114,22 @@
     https://github.com/angular-ui/bootstrap/issues/3676
 
     todo:
-    fix over-saving - something seems to be making the seq number go nuts..review
-    Xfix add proc
+    fix over-saving - something seems to be making the seq number go nuts..review, not sure this is true
     download font awesome and chart.js
     encryption to database 
-    incorporate progress bars and todos? possibly on landing -- cool circle graph thing
+    fixup navbar
     sync
-    X procedure, issue, wp icons on grid
     clean up grid a little
-    workflow icons in dropdown
+    workflow icons in dropdown/current value
+
+    X fix add proc
+    X incorporate progress bars and todos? possibly on landing -- cool donut graph thing
+    X procedure, issue, wp icons on grid
     X list of controls, drill down to list of procs
     X form controls by type (indexed/denoted by strings "multiselect", "single select", "html", "bool or boolradio etc")
     X html editor (click on linked "field" to show fullscreen editor)
     X store word doc
     X add issues
+
     if extra time - hyperlink via search
 -->

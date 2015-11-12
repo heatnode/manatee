@@ -68,6 +68,7 @@
   <ItemGroup>
     <Content Include="css\app.css" />
     <Content Include="css\bootstrap.min.css" />
+    <Content Include="css\font-awesome.min.css" />
     <Content Include="css\freeicons\Preview.png" />
     <Content Include="css\freeicons\readme.txt" />
     <Content Include="css\icons.css" />
@@ -378,8 +379,11 @@
     <Content Include="js\libraries\angular-animate.min.js" />
     <Content Include="js\libraries\angular-ckeditor.min.js" />
     <Content Include="js\libraries\Chart.HorizontalBar.js" />
+    <Content Include="js\libraries\Chart.min.js" />
     <Content Include="js\libraries\crypto\aes.js" />
+    <Content Include="js\libraries\crypto\lib-typedarrays-min.js" />
     <Content Include="js\libraries\crypto\mdo-angular-cryptography.js" />
+    <Content Include="js\libraries\crypto\sha256.js" />
     <Content Include="js\libraries\ng-flow-standalone.min.js" />
     <Content Include="js\libraries\pouchdb\pouchdb.find.min.js" />
     <Content Include="js\libraries\pouchdb\pouchdb.transform-pouch.min.js" />
@@ -428,7 +432,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="views\detailElement.html" />
+    <Content Include="js\directives\detailElement.html" />
     <Content Include="views\editorModal.html" />
     <Content Include="views\landing.html" />
     <Content Include="views\miscsnips.html" />

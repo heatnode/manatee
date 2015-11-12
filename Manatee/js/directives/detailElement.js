@@ -2,7 +2,7 @@
     return {
         restrict: 'E',
         controller: detailElementCtrl,
-        templateUrl: 'views/detailElement.html',
+        templateUrl: 'js/directives/detailElement.html',
         scope: {
             //some of this is too specific, need to refactor
             ofield: '=',
