@@ -1,4 +1,4 @@
-var databaseSvc = function ($rootScope, notify, $crypto) {
+var databaseSvc = function ($rootScope, notify, $crypto, $q) {
 
     var service = {};
     var db;
@@ -6,7 +6,7 @@ var databaseSvc = function ($rootScope, notify, $crypto) {
     //testing, would need safe storage
     service.cryptKeeper = {
         key: 'test',
-        useEncryption: false
+        useEncryption: true
     };
 
     //service.setCryptKey = function (_key) {
@@ -40,7 +40,8 @@ var databaseSvc = function ($rootScope, notify, $crypto) {
                 //    //debugger;
                 //    //todo: work through this
                 //    //http://craig-bruce.com/CryptoJS-reprise/
-                //    doc._attachments.filename.data = $crypto.encryptBinary(doc._attachments.filename.data, service.cryptKeeper.key);
+                //    //doc._attachments.filename.data = $crypto.encryptBinary(doc._attachments.filename.data, service.cryptKeeper.key);
+                //    $crypto.encryptBinary(doc._attachments.filename.data, service.cryptKeeper.key);
                 //}
 
                 //Object.keys(doc).forEach(function (field) {
@@ -90,7 +91,7 @@ var databaseSvc = function ($rootScope, notify, $crypto) {
     function createTestUser() {
         //var passhash = 'test'
         var passhash = $crypto.getHash('test');
-        console.log('passhash: ' + passhash);
+        //console.log('passhash: ' + passhash);
         var id = padId(1);
 
         var paddedId = padId(id);
@@ -118,34 +119,6 @@ var databaseSvc = function ($rootScope, notify, $crypto) {
         //}).catch(function (err) {
         //    console.log(err);
         //});
-    }
-
-    service.addWorkpaper = function (parent, title, file) {
-        var workpaper; //using closure so we have the value in the final step
-        return getSeqNumber()
-            .then(function (id) {
-                workpaper = createWorkpaper(id, parent._id, title);
-                workpaper._attachments = {
-                    filename: {
-                        type: file.type,
-                        data: file
-                    }
-                };
-                return service.db.put(workpaper);
-            })
-            .then(function (response) {
-                //update proc
-                //todo: update counts to be more generic or add to other objects
-                parent.WorkpapersCount = parent.WorkpapersCount + 1;
-                return saveObject(parent);
-            })
-            .then(function (updatedParent) {
-                return updatedParent;
-            })
-            .catch(function (err) {
-                //todo: let error bubble or throw error if it didn't work
-                console.log(err);
-            });
     }
 
     service.findObject = function (id) {
@@ -321,6 +294,7 @@ var databaseSvc = function ($rootScope, notify, $crypto) {
     }
 
     service.addIssue = function (proc, title) {
+        
         var issue; //using closure so we have the value in the final step
         return getSeqNumber()
             .then(function (id) {
@@ -341,17 +315,53 @@ var databaseSvc = function ($rootScope, notify, $crypto) {
             });
     }
 
+    var fileRead = function (file) {
+        var deferred = $q.defer();
+
+        var reader = new FileReader();
+
+        reader.onload = function () {
+            deferred.resolve(reader.result);
+        };
+
+        reader.readAsDataURL(file);
+        //reader.readAsArrayBuffer(file);
+        
+
+        return deferred.promise;
+    };
+
     service.addWorkpaper = function (parent, title, file) {
         var workpaper; //using closure so we have the value in the final step
         return getSeqNumber()
             .then(function (id) {
                 workpaper = createWorkpaper(id, parent._id, title);
+                
+                //workpaper._attachments = {
+                //    filename: {
+                //        type: file.type,
+                //        data: file
+                //    }
+                //};
+                //return service.db.put(workpaper);
+                return workpaper;
+            })
+            .then(function (wp) {
+                return fileRead(file);
+            })
+            .then(function (fileRdrResult) {
+                //debugger;
+                var encryptedFile = $crypto.encryptBinaryURL(fileRdrResult, service.cryptKeeper.key);
+                //var decResult = $crypto.decryptBinary(encryptedFile, service.cryptKeeper.key);
+
                 workpaper._attachments = {
                     filename: {
                         type: file.type,
-                        data: file
+                        data: encryptedFile
+                        //data: fileRdrResult
                     }
                 };
+                //debugger;
                 return service.db.put(workpaper);
             })
             .then(function (response) {
@@ -373,6 +383,17 @@ var databaseSvc = function ($rootScope, notify, $crypto) {
         //todo: promise this through a decryption step
         return service.db.getAttachment(dataobj._id, 'filename');
     }
+    service.getBlobAsDataURL = function (dataobj) {
+        //todo: promise this through a decryption step
+        return service.db.get(dataobj._id, { attachments: true }).then(function (doc) {
+            var attachment = doc._attachments.filename.data; //base64 enc string
+            var decResult = $crypto.decryptBinary(attachment, service.cryptKeeper.key);
+            //debugger;
+            //console.log('result');
+            return decResult;
+        });
+    }
+    
 
     service.saveProc = function (proc) {
         return saveObject(proc);
@@ -491,4 +512,4 @@ var databaseSvc = function ($rootScope, notify, $crypto) {
     return service;
 };
 
-databaseSvc.$inject = ['$rootScope', 'notify','$crypto'];
+databaseSvc.$inject = ['$rootScope', 'notify','$crypto', '$q'];

@@ -1,5 +1,5 @@
 ﻿    
-<div ng-if="ofield.type == 'testresult'" class="col-sm-3">
+<div ng-if="ofield.type == 'testresult'" class="form-group col-sm-3">
     <!-- don't really need this.. <label class="control-label">Test Results</label>-->
     <div class="btn-group btn-group-xs">
         <!--TODO: text/value would be lookup or this whole thing handled by directive-->
@@ -10,13 +10,13 @@
 </div>
 
 <div ng-if="ofield.type =='string'" class="form-group col-sm-2">
-    <a href="#" editable-text="ofield.value" class="" buttons="no">
-        {{ ofield.value || '[Code]' }}
+    <a class="linkInput input-xs" href="#" editable-text="ofield.value"  buttons="no">
+        {{ ofield.value || '[ Code ]' }}
     </a>
 </div>
 
 <div ng-if="ofield.type =='workflow'" class="form-group col-sm-2">
-    <a href="#" editable-select="ofield.value" e-ng-options="o.optvalue as o.text for o in ofield.options" buttons="no">
+    <a class="linkInput input-xs" href="#" editable-select="ofield.value" e-ng-options="o.optvalue as o.text for o in ofield.options" buttons="no">
         {{ showWFStatus() }}
     </a>
 </div>
@@ -31,8 +31,8 @@
 </div>
 
 
-<div ng-if="ofield.type =='date'" class="form-group col-sm-2">
-    <a href="#" editable-date="ofield.value"  buttons="no">
-        {{ ofield.value  || '( due date )' }}
+<div ng-if="ofield.type =='date'" class="form-group col-sm-3">
+    <a  class="linkInput input-xs" href="#" editable-date="ofield.value"  buttons="yes">
+        {{ ofield.value  || '[ due date ]' }}
     </a>
 </div>

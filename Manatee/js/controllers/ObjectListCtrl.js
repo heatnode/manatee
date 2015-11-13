@@ -59,27 +59,21 @@
 
     self.open = function (dataobj) {
         if (self.selectedObj.type == 'workpaper') {
-            $q.when(db.getBlob(dataobj)).then(function (blob) {
-                //debugger;
-                //var url = URL.createObjectURL(blob);
-                //var img = document.createElement('img');
-                //img.src = url;
-                //document.body.appendChild(img);
-
+            $q.when(db.getBlobAsDataURL(dataobj)).then(function (dataUrl) {
                 var fileNameToSaveAs = 'mytestname.docx';
                 var downloadLink = document.createElement("a");
-              //  downloadLink.download = fileNameToSaveAs;
                 downloadLink.innerHTML = "Download File";
                 if (window.webkitURL != null) {
                     // Chrome allows the link to be clicked
                     // without actually adding it to the DOM.
-                    downloadLink.href = window.webkitURL.createObjectURL(blob);
+                    //downloadLink.href = window.webkitURL.createObjectURL(blob);
+                    downloadLink.href = dataUrl;
                 } else {
                     // Firefox requires the link to be added to the DOM
                     // before it can be clicked.
                     ///msSaveOrOpenBlob this is the MS option as well
-                    //blob.type = 'application/msword';
-                    downloadLink.href = URL.createObjectURL(blob);
+                    //downloadLink.href = URL.createObjectURL(blob);
+                    downloadLink.href = dataUrl;
                     downloadLink.onclick = destroyClickedElement;
                     downloadLink.style.display = "none";
                     document.body.appendChild(downloadLink);
