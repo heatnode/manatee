@@ -60,7 +60,7 @@
     self.open = function (dataobj) {
         if (self.selectedObj.type == 'workpaper') {
             $q.when(db.getBlobAsDataURL(dataobj)).then(function (dataUrl) {
-                var fileNameToSaveAs = 'mytestname.docx';
+                //var fileNameToSaveAs = 'mytestname.docx';
                 var downloadLink = document.createElement("a");
                 downloadLink.innerHTML = "Download File";
                 if (window.webkitURL != null) {

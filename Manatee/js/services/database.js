@@ -442,6 +442,25 @@ var databaseSvc = function ($rootScope, notify, $crypto, $q) {
         return db.allDocs({ startkey: 'workpaper_' + procID, endkey: 'workpaper_' + procID + '_\uffff', include_docs: true, descending: false });
     }
 
+    service.getWorkpapersWithAttachments = function () {
+        return db.allDocs({
+            startkey: 'workpaper_\uffff', endkey: 'workpaper_',
+            include_docs: true,
+            descending: true,
+            attachments: true
+        }).then(function (result) {
+            //todo: obviously we need to settle on a decrypt pattern..
+            if (service.cryptKeeper.useEncryption) {
+                result.rows.forEach(function (item) {
+                    var attachment = item.doc._attachments.filename.data; //base64 enc string
+                    var decResult = $crypto.decryptBinary(attachment, service.cryptKeeper.key);
+                    item.doc._attachments.filename.data = decResult;
+                });
+            }
+            return result;
+        });
+    }
+
     function padId(id){
         var str = "" + id;
         var pad = "000000";

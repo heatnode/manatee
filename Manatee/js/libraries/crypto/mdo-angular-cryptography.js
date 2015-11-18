@@ -30,7 +30,7 @@ angular.module('mdo-angular-cryptography', [])
                     return CryptoJS.AES.decrypt(message, key).toString(CryptoJS.enc.Utf8);
                 },
 
-                encryptBinary: function (arrayBuffer, key, filetype) {
+                encryptBinaryArrayBuffer: function (arrayBuffer, key, filetype) {
 
                     if (key === undefined) {
                         key = cryptoKey;
@@ -102,9 +102,8 @@ angular.module('mdo-angular-cryptography', [])
                     if (key === undefined) {
                         key = cryptoKey;
                     }
-                    var encrypted = CryptoJS.AES.encrypt(
-                        urlbase64,
-                        key);
+
+                    var encrypted = CryptoJS.AES.encrypt(urlbase64, key);
 
                     return encrypted.toString();
                 },
@@ -116,10 +115,7 @@ angular.module('mdo-angular-cryptography', [])
                     }
 
                     //return CryptoJS.AES.decrypt(message, key).toString(CryptoJS.enc.Base64);
-                    var decrypt = CryptoJS.AES.decrypt(
-                        message,
-                        key);
-                    //debugger;
+                    var decrypt = CryptoJS.AES.decrypt(message, key);
                     return decrypt.toString(CryptoJS.enc.Latin1);
                 },
 

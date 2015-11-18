@@ -1,36 +1,90 @@
-﻿<div class="row" ng-controller="SyncCtrl as sync">
-    <form>
-        <div class="form-group col-xs-3">
-            <label for="cryptkey">Encryption Key</label>
-            <input type="text" class="form-control" id="cryptkey" ng-model="sync.crypt.key">
-        </div>
-        <div class="checkbox col-xs-3">
-            <label>
-                <input type="checkbox" ng-model="sync.crypt.useEncryption"> Use Encryption
-            </label>
-        </div>
-    </form>
-</div>
-<div class="row">
-    <!--<div class="col-xs-12">
-        <div ng-controller="EditorModalCtrl as EMC">
-            <a ng-click="EMC.open()">Open Modal</a>
-            <div>Text from ckeditor: {{ EMC.text }}</div>
-        </div>
-    </div>-->
-</div>
-<div class="row">
-    <div class="col-xs-12">
-        <hr />
-    </div>
-</div>
-<div class="row">
-    <div class="col-xs-12">
-    </div>
-</div>
-<div class="row">
-    <div class="col-xs-12">
-    </div>
-</div>
+﻿<style>
 
+.testRegular {
+  height: 300px;
+  overflow-y:auto;
+}
+.testDecrypted {
+    height: 300px;
+    overflow-y:auto;
+}
+
+</style>
+<div ng-controller="SyncCtrl as sync">
+
+    <div class="row">
+        <div class="col-xs-12 col-sm-6">
+            <div class="btn-group" role="group" aria-label="...">
+                <div class="btn-group btn-group-justified" role="group">
+                    <div class="btn-group btn-group-sm" role="group">
+                        <button type="button" class="btn btn-primary" ng-click="sync.listProcsForCompare()">Show Procedures</button>
+                    </div>
+                    <div class="btn-group btn-group-sm" role="group">
+                        <button type="button" class="btn btn-primary" ng-click="sync.listWorkpapersForCompare()">Show Workpapers</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12">
+            <hr />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12 testRegular">
+            <h4>Encrypted <label>(As Stored in Database)</label></h4> 
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th class="col-xs-1">DB Id</th>
+                        <th class="col-xs-2">Title</th>
+                        <th class="col-xs-9" ng-show="sync.demoData.showAttach">Attachment</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="item in sync.demoData.EncItems">
+                        <td>{{ item.id }}</td>
+                        <td class="col-xs-2">{{ item.doc.fields.title.value }}</td>
+                        <td ng-show="sync.demoData.showAttach">{{ item.attachSubStr }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12 testDecrypted">
+            <h4>Decrypted</h4>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th class="col-xs-1">DB Id</th>
+                        <th class="col-xs-2">Title</th>
+                        <th ng-show="sync.demoData.showAttach">Attachment</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="item in sync.demoData.DecItems">
+                        <td>{{ item.id }}</td>
+                        <td class="col-xs-2">{{ item.doc.fields.title.value }}</td>
+                        <td ng-show="sync.demoData.showAttach">{{ item.attachSubStr }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="row">
+        <form>
+            <div class="form-group col-xs-3">
+                <label for="cryptkey">Encryption Key</label>
+                <input type="text" class="form-control" id="cryptkey" ng-model="sync.crypt.key">
+            </div>
+            <div class="checkbox col-xs-3">
+                <label>
+                    <input type="checkbox" ng-model="sync.crypt.useEncryption"> Use Encryption
+                </label>
+            </div>
+        </form>
+    </div>
+</div>
 
