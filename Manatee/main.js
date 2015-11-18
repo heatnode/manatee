@@ -11,11 +11,9 @@ Manatee.controller('AlertCtrl', AlertCtrl);
 Manatee.controller('ModalInstanceCtrl', ModalInstanceCtrl);
 Manatee.controller('EditorModalCtrl', EditorModalCtrl);
 Manatee.controller('CkeditorCtrl', CkeditorCtrl);
-//Manatee.controller('AlertDemoCtrl', AlertDemoCtrl);
 
 Manatee.directive('activeLink', activeLink);
 Manatee.directive('detailElement', detailElement);
-//this was borrowed
 Manatee.filter('firstUpper', function () {
     return function (input, scope) {
         return input ? input.substring(0, 1).toUpperCase() + input.substring(1) : "";

@@ -41,16 +41,15 @@
 
 //---------workflow dropdown, would factor out -------------
     if ($scope.ofield.type == 'workflow') {
-        //$scope.user = {
-        //    status: 2
-        //};
 
-        //$scope.statuses = [
-        //  { value: 1, text: 'status1' },
-        //  { value: 2, text: 'status2' },
-        //  { value: 3, text: 'status3' },
-        //  { value: 4, text: 'status4' }
-        //];
+        $scope.getWFIconClass = function () {
+            return {
+                iconNotStarted: $scope.ofield.value == 0,
+                iconInProgress: $scope.ofield.value == 1,
+                iconCompleted: $scope.ofield.value == 2,
+                iconReviewed: $scope.ofield.value == 3
+            }
+        }
 
         $scope.showWFStatus = function () {
             var selected = $filter('filter')($scope.ofield.options, { optvalue: $scope.ofield.value });

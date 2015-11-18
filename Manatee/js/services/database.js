@@ -21,7 +21,6 @@ var databaseSvc = function ($rootScope, notify, $crypto, $q) {
     service.createDB = function () {
         //auto compact cleans up multiple changes to same doc.field
         db = new PouchDB('manateeStore', { auto_compaction: true });
-
         //todo: add encryption functions as dependency
         db.transform({
             incoming: function (doc) {
@@ -66,8 +65,8 @@ var databaseSvc = function ($rootScope, notify, $crypto, $q) {
                 //});
                 //var encrypted = $crypto.encrypt('some plain text data', cryptKeeper.key);
                 //var decrypted = $crypto.decrypt(encrypted, cryptKey);
-                //console.log(decrypted);
-                if (service.cryptKeeper.useEncryption && doc.fields.title) {
+                //console.log('in transform');
+                if (service.cryptKeeper.useEncryption &&  doc.fields && doc.fields.title) {
                     doc.fields.title.value = $crypto.decrypt(doc.fields.title.value, service.cryptKeeper.key);
                 }
                 //if (service.cryptKeeper.useEncryption && doc._attachments) {
@@ -316,8 +315,8 @@ var databaseSvc = function ($rootScope, notify, $crypto, $q) {
     }
 
     var fileRead = function (file) {
-        var deferred = $q.defer();
 
+        var deferred = $q.defer();
         var reader = new FileReader();
 
         reader.onload = function () {
@@ -326,8 +325,6 @@ var databaseSvc = function ($rootScope, notify, $crypto, $q) {
 
         reader.readAsDataURL(file);
         //reader.readAsArrayBuffer(file);
-        
-
         return deferred.promise;
     };
 
@@ -350,10 +347,7 @@ var databaseSvc = function ($rootScope, notify, $crypto, $q) {
                 return fileRead(file);
             })
             .then(function (fileRdrResult) {
-                //debugger;
                 var encryptedFile = $crypto.encryptBinaryURL(fileRdrResult, service.cryptKeeper.key);
-                //var decResult = $crypto.decryptBinary(encryptedFile, service.cryptKeeper.key);
-
                 workpaper._attachments = {
                     filename: {
                         type: file.type,
@@ -361,7 +355,6 @@ var databaseSvc = function ($rootScope, notify, $crypto, $q) {
                         //data: fileRdrResult
                     }
                 };
-                //debugger;
                 return service.db.put(workpaper);
             })
             .then(function (response) {
@@ -383,17 +376,14 @@ var databaseSvc = function ($rootScope, notify, $crypto, $q) {
         //todo: promise this through a decryption step
         return service.db.getAttachment(dataobj._id, 'filename');
     }
+
     service.getBlobAsDataURL = function (dataobj) {
-        //todo: promise this through a decryption step
         return service.db.get(dataobj._id, { attachments: true }).then(function (doc) {
             var attachment = doc._attachments.filename.data; //base64 enc string
             var decResult = $crypto.decryptBinary(attachment, service.cryptKeeper.key);
-            //debugger;
-            //console.log('result');
             return decResult;
         });
     }
-    
 
     service.saveProc = function (proc) {
         return saveObject(proc);
@@ -427,6 +417,17 @@ var databaseSvc = function ($rootScope, notify, $crypto, $q) {
             console.log(err);
         });
     }
+
+    //testing
+    function sleep(milliseconds) {
+        var start = new Date().getTime();
+        for (var i = 0; i < 1e7; i++) {
+            if ((new Date().getTime() - start) > milliseconds) {
+                break;
+            }
+        }
+    }
+
 
     service.getProcs = function () {
         //todo: reconsider sorting
@@ -474,7 +475,7 @@ var databaseSvc = function ($rootScope, notify, $crypto, $q) {
         failingProcs: undefined
     };
 
-    service.updateStats = function () { 
+    service.updateStats = function () {
         db.info().then(function (result) {
             // handle result
             //data.totalRecords = result.doc_count;

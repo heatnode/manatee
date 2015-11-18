@@ -17,7 +17,8 @@
 
 <div ng-if="ofield.type =='workflow'" class="form-group col-sm-2">
     <a class="linkInput input-xs" href="#" editable-select="ofield.value" e-ng-options="o.optvalue as o.text for o in ofield.options" buttons="no">
-        {{ showWFStatus() }}
+        <span class="wfIcon iconHolder" ng-class="getWFIconClass()"></span>
+            {{ showWFStatus() }}
     </a>
 </div>
 
