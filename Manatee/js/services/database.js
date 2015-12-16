@@ -9,70 +9,23 @@ var databaseSvc = function ($rootScope, notify, $crypto, $q) {
         useEncryption: true
     };
 
-    //service.setCryptKey = function (_key) {
-    //    cryptKeeper.key = _key;
-    //}
-
-    //service.setUseEncryption = function (_useEncryption) {
-    //    cryptKeeper.useEncryption = _useEncryption;
-    //}
-
-
     service.createDB = function () {
         //auto compact cleans up multiple changes to same doc.field
         db = new PouchDB('manateeStore', { auto_compaction: true });
         //todo: add encryption functions as dependency
         db.transform({
             incoming: function (doc) {
-                // do something to the document before storage
-                //Object.keys(doc).forEach(function (field) {
-                //    if (field !== '_id' && field !== '_rev') {
-                //        doc[field] = encrypt(doc[field]);
-                //    }
-                //});
+
                 if (service.cryptKeeper.useEncryption && doc.fields.title) {
                     doc.fields.title.value = $crypto.encrypt(doc.fields.title.value, service.cryptKeeper.key);
                 }
 
-                //if (service.cryptKeeper.useEncryption && doc._attachments) {
-                //    console.log('has attachment');
-                //    //debugger;
-                //    //todo: work through this
-                //    //http://craig-bruce.com/CryptoJS-reprise/
-                //    //doc._attachments.filename.data = $crypto.encryptBinary(doc._attachments.filename.data, service.cryptKeeper.key);
-                //    $crypto.encryptBinary(doc._attachments.filename.data, service.cryptKeeper.key);
-                //}
-
-                //Object.keys(doc).forEach(function (field) {
-                //    if (field !== '_id' && field !== '_rev') {
-                //        doc[field] = encrypt(doc[field]);
-                //    }
-                //});
-
                 return doc;
             },
             outgoing: function (doc) {
-                // do something to the document after retrieval
-                //Object.keys(doc).forEach(function (field) {
-                //    if (field !== '_id' && field !== '_rev') {
-                //        doc[field] = decrypt(doc[field]);
-                //    }
-                //});
-                //Object.keys(doc).forEach(function (field) {
-                //    if (field !== '_id' && field !== '_rev') {
-                //        doc[field] = decrypt(doc[field]);
-                //    }
-                //});
-                //var encrypted = $crypto.encrypt('some plain text data', cryptKeeper.key);
-                //var decrypted = $crypto.decrypt(encrypted, cryptKey);
-                //console.log('in transform');
                 if (service.cryptKeeper.useEncryption &&  doc.fields && doc.fields.title) {
                     doc.fields.title.value = $crypto.decrypt(doc.fields.title.value, service.cryptKeeper.key);
                 }
-                //if (service.cryptKeeper.useEncryption && doc._attachments) {
-                //    console.log('decrypt attachment attachment');
-                //    doc._attachments.filename.data = $crypto.decryptBinary(doc._attachments.filename.data, service.cryptKeeper.key);
-                //}
                 return doc;
             }
         });
@@ -112,12 +65,7 @@ var databaseSvc = function ($rootScope, notify, $crypto, $q) {
             //todo: this will be the error about dupes after the first time
            // console.log(err);
         });
-        //todo: maybe check first, and create if missing..
-        //db.get('mydoc').then(function (doc) {
-        //    // handle doc
-        //}).catch(function (err) {
-        //    console.log(err);
-        //});
+
     }
 
     service.findObject = function (id) {
@@ -333,14 +281,6 @@ var databaseSvc = function ($rootScope, notify, $crypto, $q) {
         return getSeqNumber()
             .then(function (id) {
                 workpaper = createWorkpaper(id, parent._id, title);
-                
-                //workpaper._attachments = {
-                //    filename: {
-                //        type: file.type,
-                //        data: file
-                //    }
-                //};
-                //return service.db.put(workpaper);
                 return workpaper;
             })
             .then(function (wp) {
@@ -476,16 +416,6 @@ var databaseSvc = function ($rootScope, notify, $crypto, $q) {
             });
     }
 
-    //function findProc
-    //// Available selectors are $gt, $gte, $lt, $lte, 
-    //// $eq, $ne, $exists, $type, and more
-    //db.createIndex({
-    //    index: { fields: ['debut'] }
-    //}).then(function () {
-    //    return db.find({
-    //        selector: { debut: { $gte: 1990 } }
-    //    });
-    //});
 
     service.data = {
         //hasIndexedDB: null,
@@ -533,3 +463,44 @@ var databaseSvc = function ($rootScope, notify, $crypto, $q) {
 };
 
 databaseSvc.$inject = ['$rootScope', 'notify','$crypto', '$q'];
+
+//old transform stuff
+// do something to the document before storage
+//Object.keys(doc).forEach(function (field) {
+//    if (field !== '_id' && field !== '_rev') {
+//        doc[field] = encrypt(doc[field]);
+//    }
+//});
+//if (service.cryptKeeper.useEncryption && doc._attachments) {
+//    console.log('has attachment');
+//    //debugger;
+//    //todo: work through this
+//    //http://craig-bruce.com/CryptoJS-reprise/
+//    //doc._attachments.filename.data = $crypto.encryptBinary(doc._attachments.filename.data, service.cryptKeeper.key);
+//    $crypto.encryptBinary(doc._attachments.filename.data, service.cryptKeeper.key);
+//}
+
+//Object.keys(doc).forEach(function (field) {
+//    if (field !== '_id' && field !== '_rev') {
+//        doc[field] = encrypt(doc[field]);
+//    }
+//});
+
+//function findProc
+//// Available selectors are $gt, $gte, $lt, $lte, 
+//// $eq, $ne, $exists, $type, and more
+//db.createIndex({
+//    index: { fields: ['debut'] }
+//}).then(function () {
+//    return db.find({
+//        selector: { debut: { $gte: 1990 } }
+//    });
+//});
+
+//service.setCryptKey = function (_key) {
+//    cryptKeeper.key = _key;
+//}
+
+//service.setUseEncryption = function (_useEncryption) {
+//    cryptKeeper.useEncryption = _useEncryption;
+//}
